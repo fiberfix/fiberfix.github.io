@@ -47,7 +47,7 @@
         .navbar-cta:hover{background:linear-gradient(145deg,#243f8a 0%,#3572ac 35%,#6ab3da 65%,#a8dcf2 82%,#75bcd8 100%)!important;color:#f0f8ff!important;transform:translateY(-4px) scale(1.04)!important;box-shadow:0 14px 40px rgba(40,100,190,0.65),0 0 0 3px rgba(90,158,200,0.22),inset 0 1px 0 rgba(190,232,252,0.3)!important;animation:none!important}
         .navbar-cta:hover::after{opacity:0.58;filter:blur(20px);animation:none}
         .nav-active{color:#7dd3fc!important;background:var(--blue-glow)!important;border:1px solid var(--blue-border)!important}
-        .hamburger{display:none;width:32px;height:32px;font-size:26px;color:var(--text-bright);cursor:pointer;background:none;border:none;padding:0;margin:0;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .hamburger{display:none;width:32px;height:32px;font-size:26px;color:var(--text-bright);cursor:pointer;background:none;border:none;padding:0;margin:0;line-height:1;align-items:center;justify-content:center;flex-shrink:0}
 
         /* SOCIAL */
         .social-bar{position:fixed;left:20px;bottom:90px;display:flex;flex-direction:column;gap:9px;z-index:9998}
@@ -134,7 +134,7 @@
             .navbar-contact{display:none}
             .navbar-links a{width:100%;text-align:center;padding:13px;font-size:16px}
             .navbar-cta{width:auto!important;align-self:center!important;justify-content:center!important;margin:4px auto!important}
-            .hamburger{display:block}
+            .hamburger{display:flex}
             .navbar-logo img{height:26px!important}
             .stats-wrap{grid-template-columns:repeat(2,1fr)}
             .story-card{padding:32px 22px}
@@ -148,8 +148,7 @@
         .nbc-item{display:flex;align-items:center;gap:6px;color:var(--text-bright);font-size:13px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color 0.2s}
         .nbc-item:hover{color:#ffffff}
         .nbc-item svg{opacity:0.9;flex-shrink:0}
-        .nbc-sep{width:1px;height:13px;background:rgba(14,165,233,0.3);flex-shrink:0}50%{transform:translateY(-3px)}}
-        .navbar-logo img{height:28px;width:auto;filter:drop-shadow(0 0 14px rgba(14,165,233,0.45))}
+        .nbc-sep{width:1px;height:13px;background:rgba(14,165,233,0.3);flex-shrink:0}
         
         /* ── CTA button – GPU-composited 120 Hz animation ── */
         .btn-primary{will-change:transform;animation:ctaFloat 2.4s cubic-bezier(0.45,0,0.55,1) infinite;position:relative}
@@ -162,13 +161,30 @@
     
         .btn-no-pulse,.btn-no-pulse::after{animation:none!important}
     </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "name": "FiberFix – מי אנחנו",
+      "description": "FiberFix – טכנאים מנוסים בהתקנת רשתות ופתרון תקלות אינטרנט באזור גוש דן.",
+      "url": "https://fiberfix.co.il/about.html",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "FiberFix",
+        "url": "https://fiberfix.co.il"
+      }
+    }
+    </script>
 </head>
 <body>
+<a href="#main-content" class="skip-link" style="position:absolute;top:-40px;right:0;background:#0ea5e9;color:#fff;padding:8px 16px;border-radius:0 0 8px 0;font-weight:700;z-index:99999;transition:top 0.2s;text-decoration:none" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">דלג לתוכן הראשי</a>
 <canvas id="networkCanvas" aria-hidden="true"></canvas>
 
+<header>
 <nav class="navbar">
     <div class="navbar-row-top">
-        <div class="navbar-logo"><img src="logo-icon.png" alt="FiberFix לוגו" height="44"></div>
+        <div class="navbar-logo"><img src="logo-icon.png" alt="FiberFix לוגו" width="44" height="44"></div>
         <div class="navbar-contact">
             <a href="tel:0504086363" class="nbc-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>050-408-6363</span></a>
             <div class="nbc-sep"></div>
@@ -185,13 +201,15 @@
         <a href="contact.html" class="navbar-cta" style="margin-right:12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> דברו איתנו</a>
     </div>
 </nav>
+</header>
 
 <div class="social-bar">
-    <a href="https://wa.me/972504086363" class="social-btn wa" target="_blank" rel="noopener noreferrer" title="WhatsApp"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.561 4.14 1.535 5.874L.057 23.5a.5.5 0 0 0 .609.61l5.701-1.453A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.95 9.95 0 0 1-5.127-1.415l-.367-.217-3.804.971.998-3.717-.24-.381A9.953 9.953 0 0 1 2 12C2 6.478 6.478 2 12 2s10 4.478 10 10-4.478 10-10 10z"/></svg></a>
-    <a href="https://facebook.com/fiberfixil" class="social-btn fb" target="_blank" rel="noopener noreferrer" title="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-    <a href="https://instagram.com/fiberfixil" class="social-btn ig" target="_blank" rel="noopener noreferrer" title="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+    <a href="https://wa.me/972504086363" class="social-btn wa" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.561 4.14 1.535 5.874L.057 23.5a.5.5 0 0 0 .609.61l5.701-1.453A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.95 9.95 0 0 1-5.127-1.415l-.367-.217-3.804.971.998-3.717-.24-.381A9.953 9.953 0 0 1 2 12C2 6.478 6.478 2 12 2s10 4.478 10 10-4.478 10-10 10z"/></svg></a>
+    <a href="https://facebook.com/fiberfixil" class="social-btn fb" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a href="https://instagram.com/fiberfixil" class="social-btn ig" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
 </div>
 
+<main id="main-content">
 <!-- HERO -->
 <section class="page-hero">
     <div class="anim-1"><span class="section-label">מי אנחנו</span></div>
@@ -295,6 +313,7 @@
     </div>
 </div>
 
+</main>
 <footer>© כל הזכויות שמורות ל‑FiberFix — 2026 &nbsp;·&nbsp; <a href="index.html">דף הבית</a> &nbsp;·&nbsp; <a href="contact.html">יצירת קשר</a></footer>
 
 <script>
@@ -419,4 +438,4 @@
 })();
 </script>
 </body>
-</html>
+</html>                                                                                                                                                  
