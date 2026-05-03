@@ -36,13 +36,13 @@
                 /* NAVBAR */
         .navbar{position:fixed;top:0;width:100%;background:rgba(19,21,28,0.88);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);z-index:9999;display:flex;flex-direction:column;padding:0}
         .navbar-row-top{display:flex;align-items:center;justify-content:space-between;padding:8px 32px;min-height:56px}
-        .navbar-logo img{height:34px;width:auto;filter:drop-shadow(0 0 16px rgba(14,165,233,0.45))}
+        .navbar-logo{display:flex;align-items:center;height:32px}.navbar-logo img{height:32px;width:auto;filter:drop-shadow(0 0 16px rgba(14,165,233,0.45))}
         .navbar-links{display:flex;gap:4px;align-items:center;justify-content:center;padding:4px 32px 8px;border-top:1px solid rgba(255,255,255,0.05)}
         .navbar-links a{padding:8px 16px;border-radius:8px;color:var(--text);font-size:15px;font-weight:500;text-decoration:none;transition:all 0.2s}
         .navbar-links a:hover{background:linear-gradient(135deg,rgba(27,62,122,0.38),rgba(90,158,200,0.2));color:#c8e6f8;transform:translateY(-2px);box-shadow:0 4px 14px rgba(38,100,175,0.22),inset 0 1px 0 rgba(140,200,230,0.12)}
         .navbar-cta{background:linear-gradient(145deg,#1b3e7a 0%,#2e6199 35%,#5a9ec8 65%,#96c8e2 82%,#62aac8 100%)!important;color:#e0f0fc!important;padding:10px 22px!important;border-radius:10px!important;font-weight:700!important;border:1px solid rgba(100,175,215,0.4)!important;box-shadow:0 2px 18px rgba(38,95,165,0.45),inset 0 1px 0 rgba(165,215,240,0.25);display:inline-flex!important;align-items:center!important;gap:7px!important;text-shadow:0 1px 2px rgba(5,20,55,0.45)}
         .navbar-cta:hover{background:linear-gradient(145deg,#243f8a 0%,#3572ac 35%,#6ab3da 65%,#a8dcf2 82%,#75bcd8 100%)!important;color:#f0f8ff!important;transform:translateY(-3px) scale(1.04);box-shadow:0 10px 32px rgba(40,100,190,0.58),inset 0 1px 0 rgba(190,232,252,0.3)!important}
-        .hamburger{display:none;font-size:38px;color:var(--text-bright);cursor:pointer;background:none;border:none;padding:4px}
+        .hamburger{display:none;width:32px;height:32px;font-size:26px;color:var(--text-bright);cursor:pointer;background:none;border:none;padding:0;margin:0;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
         /* HERO */
         .hero{padding:160px 24px 90px;text-align:center;background:radial-gradient(ellipse 90% 60% at 50% -5%,rgba(14,165,233,0.11) 0%,transparent 65%);position:relative;overflow:hidden}
@@ -119,7 +119,7 @@
         .faq-item.open .faq-a{max-height:200px;padding:0 24px 20px}
 
         /* CTA */
-        #contact{background:rgba(19,21,28,0.80);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:90px 24px;text-align:center}
+        #contact{background:rgba(24,27,37,0.80);padding:88px 24px;text-align:center}
         #contact h2{font-size:2.6rem;font-weight:900;color:var(--heading);margin-bottom:12px;letter-spacing:-0.04em}
         #contact p{color:var(--text);font-size:1.05rem;margin-bottom:36px}
         .cta-grid{display:flex;flex-direction:column;gap:12px;max-width:560px;margin:0 auto}
@@ -171,7 +171,7 @@
         .nbc-item:hover{color:#ffffff}
         .nbc-item svg{opacity:0.9;flex-shrink:0}
         .nbc-sep{width:1px;height:13px;background:rgba(14,165,233,0.3);flex-shrink:0}50%{transform:translateY(-3px)}}
-        .navbar-logo img{height:28px;width:auto;filter:drop-shadow(0 0 14px rgba(14,165,233,0.45))}
+        .navbar-logo img{height:32px;width:auto;filter:drop-shadow(0 0 14px rgba(14,165,233,0.45))}
         
         /* ── CTA button – GPU-composited 120 Hz animation ── */
         @keyframes ctaFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.022)}}
