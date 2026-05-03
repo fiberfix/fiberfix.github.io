@@ -36,7 +36,7 @@
         /* NAVBAR */
         .navbar{position:fixed;top:0;width:100%;background:rgba(19,21,28,0.88);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);z-index:9999;display:flex;flex-direction:column;padding:0}
         .navbar-row-top{display:flex;align-items:center;justify-content:space-between;padding:8px 32px;min-height:56px}
-        .navbar-logo img{height:52px;width:auto;filter:drop-shadow(0 0 14px rgba(14,165,233,0.28));will-change:transform;animation:microFloat 4s ease-in-out infinite}
+        .navbar-logo img{height:52px;width:auto;filter:drop-shadow(0 0 14px rgba(14,165,233,0.28))}
         .navbar-links{display:flex;gap:4px;align-items:center;justify-content:center;padding:4px 32px 8px;border-top:1px solid rgba(255,255,255,0.05)}
         .navbar-links a{padding:8px 16px;border-radius:8px;color:var(--text);font-size:15px;font-weight:500;text-decoration:none;transition:all 0.2s;white-space:nowrap}
         .navbar-links a:hover{background:linear-gradient(135deg,rgba(27,62,122,0.38),rgba(90,158,200,0.2));color:#c8e6f8;transform:translateY(-2px);box-shadow:0 4px 14px rgba(38,100,175,0.22),inset 0 1px 0 rgba(140,200,230,0.12)}
@@ -50,7 +50,7 @@
         .hamburger{display:none;font-size:26px;color:var(--text-bright);cursor:pointer;background:none;border:none;padding:4px}
 
         /* SOCIAL */
-        .social-bar{position:fixed;left:20px;bottom:26px;display:flex;flex-direction:column;gap:9px;z-index:9998}
+        .social-bar{position:fixed;left:20px;bottom:90px;display:flex;flex-direction:column;gap:9px;z-index:9998}
         .social-btn{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border);box-shadow:0 4px 14px rgba(0,0,0,0.3);text-decoration:none;transition:all 0.25s ease;color:var(--text)}
         .social-btn:hover{transform:translateY(-5px) scale(1.12);box-shadow:0 12px 28px rgba(0,0,0,0.5)}
         .social-btn.wa:hover{background:#25d366;border-color:#25d366;color:white}
@@ -59,7 +59,7 @@
         .social-btn.no-hover{pointer-events:none;background:var(--bg-card)!important;border-color:var(--border)!important;color:var(--text)!important;transform:none!important;box-shadow:0 4px 14px rgba(0,0,0,0.3)!important}
 
         /* PAGE */
-        .page-hero{padding:130px 24px 70px;text-align:center;position:relative;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(14,165,233,0.10) 0%,transparent 65%)}
+        .page-hero{padding:160px 24px 70px;text-align:center;position:relative;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(14,165,233,0.10) 0%,transparent 65%)}
         .section-label{display:inline-block;background:var(--blue-glow);color:#7dd3fc;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;padding:5px 14px;border-radius:999px;border:1px solid var(--blue-border);margin-bottom:14px}
         .page-hero h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;color:var(--heading);letter-spacing:-0.04em;margin-bottom:16px}
         .page-hero h1 span{background:linear-gradient(135deg,#38bdf8,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -136,7 +136,7 @@
             .hamburger{display:block}
             .stats-wrap{grid-template-columns:repeat(2,1fr)}
             .story-card{padding:32px 22px}
-            .social-bar{left:10px;bottom:16px}
+            .social-bar{left:10px;bottom:80px}
         }
     
         @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
@@ -146,9 +146,8 @@
         .nbc-item{display:flex;align-items:center;gap:6px;color:#7dd3fc;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;transition:color 0.2s}
         .nbc-item:hover{color:#bae6fd}
         .nbc-item svg{opacity:0.9;flex-shrink:0}
-        .nbc-sep{width:1px;height:13px;background:rgba(14,165,233,0.3);flex-shrink:0}
-        @keyframes microFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-        .navbar-logo img{height:40px;width:40px;filter:drop-shadow(0 0 14px rgba(14,165,233,0.45));border-radius:9px;will-change:transform;animation:microFloat 4s ease-in-out infinite}
+        .nbc-sep{width:1px;height:13px;background:rgba(14,165,233,0.3);flex-shrink:0}50%{transform:translateY(-3px)}}
+        .navbar-logo img{height:40px;width:40px;filter:drop-shadow(0 0 14px rgba(14,165,233,0.45));border-radius:9px}
         
         /* ── CTA button – GPU-composited 120 Hz animation ── */
         .btn-primary{will-change:transform;animation:ctaFloat 2.4s cubic-bezier(0.45,0,0.55,1) infinite;position:relative}
