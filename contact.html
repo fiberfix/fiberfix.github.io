@@ -39,7 +39,7 @@
         .navbar-links a:hover{ background:linear-gradient(135deg,rgba(27,62,122,0.38),rgba(90,158,200,0.2)); color:#c8e6f8; transform:translateY(-2px); box-shadow:0 4px 14px rgba(38,100,175,0.22),inset 0 1px 0 rgba(140,200,230,0.12); }
         .navbar-cta{ background:var(--blue)!important; color:#0d0f16!important; padding:10px 22px!important; border-radius:10px!important; font-weight:700!important; display:inline-flex!important; align-items:center!important; gap:7px!important; }
         .nav-active{ color:#7dd3fc!important; background:var(--blue-glow)!important; border:1px solid var(--blue-border)!important; }
-        .hamburger{ display:none; font-size:32px; color:var(--text-bright); cursor:pointer; background:none; border:none; padding:4px; }
+        .hamburger{ display:none; font-size:38px; color:var(--text-bright); cursor:pointer; background:none; border:none; padding:4px; }
 
         /* SOCIAL FLOAT */
         .social-bar{ position:fixed; left:20px; bottom:90px; display:flex; flex-direction:column; gap:9px; z-index:9998; }
@@ -171,7 +171,8 @@
             .navbar-links{display:none;position:fixed;top:56px;right:0;left:0;background:rgba(19,21,28,0.98);backdrop-filter:blur(20px);flex-direction:column;padding:16px;border-bottom:1px solid var(--border);gap:4px;justify-content:flex-start}
             .navbar-links.active{ display:flex; }
             .navbar-links a{ width:100%; text-align:center; padding:13px; font-size:16px; }.navbar-cta{width:auto!important;align-self:center!important;justify-content:center!important;margin:4px auto!important}
-            .hamburger{ display:block; }            .navbar-contact{display:none}
+            .hamburger{ display:block; }
+            .navbar-logo img{height:26px!important}            .navbar-contact{display:none}
             .contact-cards{ grid-template-columns:1fr 1fr; }
             .form-wrapper{ padding:28px 18px; }
             .social-bar{ left:10px; bottom:80px; }
@@ -186,7 +187,7 @@
         .nbc-item:hover{color:#ffffff}
         .nbc-item svg{opacity:0.9;flex-shrink:0}
         .nbc-sep{width:1px;height:13px;background:rgba(14,165,233,0.3);flex-shrink:0}50%{transform:translateY(-3px)}}
-        .navbar-logo img{height:32px;width:auto;filter:drop-shadow(0 0 14px rgba(14,165,233,0.45))}
+        .navbar-logo img{height:28px;width:auto;filter:drop-shadow(0 0 14px rgba(14,165,233,0.45))}
         
         /* ── CTA button shimmer animation ── */
         @keyframes gentleGlow{0%,100%{box-shadow:0 4px 22px rgba(38,95,165,0.45),inset 0 1px 0 rgba(165,215,240,0.22)}50%{box-shadow:0 6px 32px rgba(14,165,233,0.55),0 0 0 3px rgba(14,165,233,0.08),inset 0 1px 0 rgba(165,215,240,0.28)}}
