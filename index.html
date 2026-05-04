@@ -41,8 +41,9 @@
         .navbar-row-top{display:flex;align-items:center;justify-content:space-between;padding:8px 32px;min-height:56px}
         .navbar-logo{display:flex;align-items:center;align-self:center;}.navbar-logo a{display:flex;align-items:center;line-height:0;padding:0;}
         .navbar-links{display:flex;gap:4px;align-items:center;justify-content:center;padding:4px 32px 8px;border-top:1px solid rgba(255,255,255,0.05)}
-        .navbar-links a{padding:8px 16px;border-radius:8px;color:var(--text);font-size:15px;font-weight:500;text-decoration:none;transition:all 0.2s}
+        .navbar-links a{padding:8px 16px;border-radius:8px;color:var(--text);font-size:15px;font-weight:500;text-decoration:none;transition:all 0.2s;border:1px solid transparent}
         .navbar-links a:hover{background:linear-gradient(135deg,rgba(27,62,122,0.38),rgba(90,158,200,0.2));color:#c8e6f8;transform:translateY(-2px);box-shadow:0 4px 14px rgba(38,100,175,0.22),inset 0 1px 0 rgba(140,200,230,0.12)}
+        .nav-active{color:#7dd3fc!important;background:var(--blue-glow)!important;border:1px solid var(--blue-border)!important;transform:none!important}
         .navbar-cta{background:linear-gradient(145deg,#1b3e7a 0%,#2e6199 35%,#5a9ec8 65%,#96c8e2 82%,#62aac8 100%)!important;color:#e0f0fc!important;padding:10px 22px!important;border-radius:10px!important;font-weight:700!important;border:1px solid rgba(100,175,215,0.4)!important;box-shadow:0 2px 18px rgba(38,95,165,0.45),inset 0 1px 0 rgba(165,215,240,0.25);display:inline-flex!important;align-items:center!important;gap:7px!important;text-shadow:0 1px 2px rgba(5,20,55,0.45)}
         .navbar-cta:hover{background:linear-gradient(145deg,#243f8a 0%,#3572ac 35%,#6ab3da 65%,#a8dcf2 82%,#75bcd8 100%)!important;color:#f0f8ff!important;transform:translateY(-3px) scale(1.04);box-shadow:0 10px 32px rgba(40,100,190,0.58),inset 0 1px 0 rgba(190,232,252,0.3)!important}
         .hamburger{display:none;width:32px;height:32px;font-size:29px;color:var(--text-bright);cursor:pointer;background:none;border:none;padding:0;margin:0;line-height:1;align-items:center;justify-content:center;flex-shrink:0}
@@ -552,6 +553,25 @@
         entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');secObs.unobserve(e.target);} });
     }, {threshold:0.12});
     document.querySelectorAll('.section-reveal').forEach(el => secObs.observe(el));
+
+    // Scrollspy — active nav link follows scroll position
+    (function(){
+        const ids = ['services','why','areas','faq'];
+        const map = {};
+        ids.forEach(id => {
+            const sec = document.getElementById(id);
+            const lnk = document.querySelector('.navbar-links a[href="#'+id+'"]');
+            if (sec && lnk) map[id] = {sec, lnk};
+        });
+        function update() {
+            const y = window.scrollY + 72;
+            let active = null;
+            ids.forEach(id => { if (map[id] && map[id].sec.offsetTop <= y) active = id; });
+            ids.forEach(id => { if (map[id]) map[id].lnk.classList.toggle('nav-active', id === active); });
+        }
+        window.addEventListener('scroll', update, {passive:true});
+        update();
+    })();
 
 </script>
 
