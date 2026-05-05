@@ -44,6 +44,8 @@
         .navbar-links a{padding:8px 16px;border-radius:8px;color:var(--text);font-size:15px;font-weight:500;text-decoration:none;transition:all 0.2s;border:1px solid transparent;white-space:nowrap}
         .navbar-links a:hover{background:linear-gradient(135deg,rgba(27,62,122,0.38),rgba(90,158,200,0.2));color:#c8e6f8;transform:translateY(-2px);box-shadow:0 4px 14px rgba(38,100,175,0.22),inset 0 1px 0 rgba(140,200,230,0.12)}
         .nav-active{color:#7dd3fc!important;background:var(--blue-glow)!important;border:1px solid var(--blue-border)!important;transform:none!important}
+        @keyframes startPulse{0%{box-shadow:0 4px 22px rgba(6,182,212,0.35),0 0 0 0 rgba(6,182,212,0.18),inset 0 1px 0 rgba(200,240,255,0.2)}40%{box-shadow:0 6px 28px rgba(6,182,212,0.52),0 0 0 10px rgba(6,182,212,0.06),inset 0 1px 0 rgba(200,240,255,0.2)}70%{box-shadow:0 8px 34px rgba(6,182,212,0.58),0 0 0 18px rgba(6,182,212,0),inset 0 1px 0 rgba(200,240,255,0.2)}100%{box-shadow:0 4px 22px rgba(6,182,212,0.35),0 0 0 0 rgba(6,182,212,0),inset 0 1px 0 rgba(200,240,255,0.2)}}
+        @keyframes startShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
         @keyframes ctaFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.022)}}
         @keyframes ctaGlow{0%,100%{opacity:0.2}50%{opacity:0.52}}
         .navbar-cta{background:linear-gradient(145deg,#1b3e7a 0%,#2e6199 35%,#5a9ec8 65%,#96c8e2 82%,#62aac8 100%)!important;color:#e0f0fc!important;padding:10px 22px!important;border-radius:10px!important;font-weight:700!important;border:1px solid rgba(100,175,215,0.4)!important;display:inline-flex!important;align-items:center!important;gap:7px!important;text-shadow:0 1px 2px rgba(5,20,55,0.45);will-change:transform;animation:ctaFloat 2.4s cubic-bezier(0.45,0,0.55,1) infinite;position:relative!important}
@@ -87,8 +89,8 @@
         .gauge-phase{font-size:12px;color:var(--blue);margin-top:5px;font-weight:500;min-height:16px;transition:opacity 0.3s}
 
         /* START BUTTON */
-        .start-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;border-radius:14px;font-family:'Rubik',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.25s ease;background:linear-gradient(145deg,#1b3e7a 0%,#2e6199 35%,#5a9ec8 65%,#96c8e2 82%,#62aac8 100%);color:#e0f0fc;border:1px solid rgba(100,175,215,0.4);box-shadow:0 4px 22px rgba(38,95,165,0.45),inset 0 1px 0 rgba(165,215,240,0.22);text-shadow:0 1px 2px rgba(5,20,55,0.45);margin-bottom:24px;position:relative}
-        .start-btn:hover{background:linear-gradient(145deg,#243f8a 0%,#3572ac 35%,#6ab3da 65%,#a8dcf2 82%,#75bcd8 100%);color:#f0f8ff;transform:translateY(-3px) scale(1.04);box-shadow:0 12px 36px rgba(40,100,190,0.58),inset 0 1px 0 rgba(190,232,252,0.3)}
+        .start-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;border-radius:14px;font-family:'Rubik',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.3s ease;background:linear-gradient(120deg,#0c4a6e 0%,#0e7490 30%,#06b6d4 60%,#22d3ee 80%,#06b6d4 100%);background-size:200% auto;color:#e0f9ff;border:1px solid rgba(6,182,212,0.5);box-shadow:0 4px 22px rgba(6,182,212,0.45),inset 0 1px 0 rgba(200,240,255,0.2);text-shadow:0 1px 3px rgba(0,40,60,0.5);margin-bottom:24px;position:relative;animation:startPulse 6s cubic-bezier(0.45,0,0.55,1) infinite,startShimmer 9s linear infinite}
+        .start-btn:hover{background:linear-gradient(120deg,#164e63 0%,#155e75 30%,#0891b2 60%,#38bdf8 80%,#0891b2 100%);background-size:100% auto;color:#f0feff;transform:translateY(-3px) scale(1.05);box-shadow:0 12px 40px rgba(6,182,212,0.65),0 0 0 3px rgba(6,182,212,0.2),inset 0 1px 0 rgba(200,245,255,0.3);animation:none}
         .start-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
 
         /* STATUS */
@@ -98,26 +100,26 @@
         .metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px}
         .metric-card{background:var(--bg-card2);border:1px solid var(--border);border-radius:16px;padding:18px 10px 14px;transition:border-color 0.4s,box-shadow 0.4s}
         .metric-card.done{border-color:var(--blue-border);box-shadow:0 0 20px rgba(14,165,233,0.08)}
-        .metric-icon{font-size:18px;margin-bottom:6px;line-height:1}
+        .metric-icon{font-size:18px;margin-bottom:8px;line-height:1;height:28px;display:flex;align-items:center;justify-content:center}
         .metric-val{font-family:'Heebo','Rubik',sans-serif;font-size:1.6rem;font-weight:800;color:var(--heading);line-height:1;min-height:32px;display:flex;align-items:center;justify-content:center}
         .metric-unit{font-size:11px;font-weight:600;color:var(--text);letter-spacing:0.06em;margin-top:2px}
         .metric-label{font-size:12px;color:var(--text);font-weight:500;margin-top:5px}
         .metric-card.metric-main{border-color:var(--border-h)}
 
         /* INTERPRETATION */
-        .interpretation{margin-top:24px;padding:18px 20px;border-radius:14px;border:1px solid;text-align:right;display:none}
-        .interpretation.speed-bad{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.3)}
-        .interpretation.speed-slow{background:rgba(249,115,22,0.08);border-color:rgba(249,115,22,0.3)}
-        .interpretation.speed-ok{background:rgba(234,179,8,0.08);border-color:rgba(234,179,8,0.3)}
-        .interpretation.speed-good{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.3)}
-        .interpretation.speed-fast{background:rgba(14,165,233,0.08);border-color:rgba(14,165,233,0.3)}
-        .interp-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+        .interpretation{margin-top:24px;padding:10px 20px 18px;border-radius:14px;border:1px solid;text-align:center;display:none}
+        .interpretation.speed-bad{background:rgba(239,68,68,0.18);border-color:rgba(239,68,68,0.7);box-shadow:0 0 20px rgba(239,68,68,0.15) inset}
+        .interpretation.speed-slow{background:rgba(249,115,22,0.16);border-color:rgba(249,115,22,0.65);box-shadow:0 0 20px rgba(249,115,22,0.12) inset}
+        .interpretation.speed-ok{background:rgba(234,179,8,0.15);border-color:rgba(234,179,8,0.65);box-shadow:0 0 20px rgba(234,179,8,0.12) inset}
+        .interpretation.speed-good{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.65);box-shadow:0 0 20px rgba(34,197,94,0.12) inset}
+        .interpretation.speed-fast{background:rgba(34,197,94,0.18);border-color:rgba(34,197,94,0.75);box-shadow:0 0 24px rgba(34,197,94,0.15) inset}
+        .interp-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}
         .interp-badge{font-size:13px;font-weight:700;padding:3px 12px;border-radius:999px;white-space:nowrap}
-        .speed-bad .interp-badge{background:rgba(239,68,68,0.2);color:#fca5a5}
-        .speed-slow .interp-badge{background:rgba(249,115,22,0.2);color:#fdba74}
-        .speed-ok .interp-badge{background:rgba(234,179,8,0.2);color:#fde047}
-        .speed-good .interp-badge{background:rgba(34,197,94,0.2);color:#86efac}
-        .speed-fast .interp-badge{background:rgba(14,165,233,0.2);color:#7dd3fc}
+        .speed-bad .interp-badge{background:rgba(239,68,68,0.3);color:#fca5a5}
+        .speed-slow .interp-badge{background:rgba(249,115,22,0.3);color:#fdba74}
+        .speed-ok .interp-badge{background:rgba(234,179,8,0.28);color:#fde047}
+        .speed-good .interp-badge{background:rgba(34,197,94,0.28);color:#86efac}
+        .speed-fast .interp-badge{background:rgba(34,197,94,0.28);color:#86efac}
         .interp-desc{font-size:13.5px;color:var(--text-bright);line-height:1.6}
         .interp-cta{margin-top:14px;font-size:13px;color:var(--text)}
         .interp-cta a{color:#7dd3fc;text-decoration:none;font-weight:600}
@@ -131,9 +133,9 @@
         .cta-section{background:rgba(24,27,37,0.80);padding:72px 24px;text-align:center;position:relative;z-index:1}
         .cta-section h2{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;color:var(--heading);margin-bottom:12px;letter-spacing:-0.04em}
         .cta-section p{color:var(--text);font-size:1.05rem;margin-bottom:32px;max-width:480px;margin-inline:auto}
-        .btn-cta-wrap{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+        .btn-cta-wrap{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}.btn-cta-wrap .btn{flex:1;min-width:180px;max-width:230px;justify-content:center}
         .btn{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;border-radius:12px;font-family:'Rubik',sans-serif;font-size:16px;font-weight:700;text-decoration:none;cursor:pointer;transition:all 0.25s ease;border:none}
-        .btn-primary{background:linear-gradient(145deg,#1b3e7a 0%,#2e6199 35%,#5a9ec8 65%,#96c8e2 82%,#62aac8 100%);color:#e0f0fc;border:1px solid rgba(100,175,215,0.4);box-shadow:0 4px 22px rgba(38,95,165,0.45),inset 0 1px 0 rgba(165,215,240,0.22);text-shadow:0 1px 2px rgba(5,20,55,0.45);will-change:transform;animation:ctaFloat 2.4s cubic-bezier(0.45,0,0.55,1) infinite;position:relative}
+        .btn-no-pulse,.btn-no-pulse::after{animation:none!important;will-change:auto}.btn-primary{background:linear-gradient(145deg,#1b3e7a 0%,#2e6199 35%,#5a9ec8 65%,#96c8e2 82%,#62aac8 100%);color:#e0f0fc;border:1px solid rgba(100,175,215,0.4);box-shadow:0 4px 22px rgba(38,95,165,0.45),inset 0 1px 0 rgba(165,215,240,0.22);text-shadow:0 1px 2px rgba(5,20,55,0.45);will-change:transform;animation:ctaFloat 2.4s cubic-bezier(0.45,0,0.55,1) infinite;position:relative}
         .btn-primary::after{content:'';position:absolute;inset:-4px;border-radius:14px;background:linear-gradient(145deg,#1b3e7a,#5a9ec8,#96c8e2);filter:blur(14px);opacity:0.22;animation:ctaGlow 2.4s cubic-bezier(0.45,0,0.55,1) infinite;z-index:-1;pointer-events:none}
         .btn-primary:hover{animation:none!important;transform:translateY(-4px) scale(1.04)!important;box-shadow:0 14px 40px rgba(40,100,190,0.62),inset 0 1px 0 rgba(190,232,252,0.3)!important}
         .btn-wa{background:#1a8a45;color:#fff;box-shadow:0 4px 18px rgba(26,138,69,.3)}
@@ -148,10 +150,10 @@
 
         /* NAVBAR CONTACT */
         .navbar-contact{display:flex;align-items:center;gap:16px;direction:ltr}
-        .nbc-item{display:flex;align-items:center;gap:6px;color:var(--text-bright);font-size:13px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color 0.2s}
-        .nbc-item:hover{color:#ffffff}
-        .nbc-item svg{opacity:0.9;flex-shrink:0}
-        .nbc-sep{width:1px;height:13px;background:rgba(14,165,233,0.3);flex-shrink:0}
+        .nbc-item{display:flex;align-items:center;gap:6px;color:var(--text-bright);font-size:13px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color 0.2s,text-shadow 0.2s}
+        .nbc-item:hover{color:#38bdf8;text-shadow:0 0 12px rgba(56,189,248,0.4)}
+        .nbc-item svg{opacity:0.9;flex-shrink:0;transition:filter 0.2s,opacity 0.2s}.nbc-item:hover svg{opacity:1;filter:drop-shadow(0 0 4px rgba(56,189,248,0.6))}
+        .nbc-sep{width:1px;height:13px;background:rgba(216,224,240,0.25);flex-shrink:0}
 
         @media(max-width:768px){
             .navbar-row-top{padding:0 18px;min-height:56px}
@@ -220,9 +222,9 @@
 
 <!-- HERO -->
 <section class="page-hero">
-    <div class="anim-1"><span class="section-label">כלי חינמי</span></div>
+    <div class="anim-1"><span class="section-label">בדיקת מהירות</span></div>
     <h1 class="anim-2">בדוק את מהירות<br><span>האינטרנט שלך</span></h1>
-    <p class="anim-3">מדידת Download, Upload ו-Ping בזמן אמת — ישירות מהדפדפן, ללא התקנה</p>
+    <p class="anim-3">מדידה בזמן אמת — ישירות מהדפדפן ללא התקנה</p>
 </section>
 
 <!-- SPEEDTEST WIDGET -->
@@ -256,25 +258,43 @@
         <!-- METRICS -->
         <div class="metrics-row">
             <div class="metric-card" id="mc-ping">
-                <div class="metric-icon">⚡</div>
+                <div class="metric-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto">
+  <circle cx="14" cy="14" r="10" stroke="#38bdf8" stroke-width="1.8"/>
+  <circle cx="14" cy="14" r="4.5" stroke="#38bdf8" stroke-width="1.8"/>
+  <circle cx="14" cy="14" r="1.8" fill="#38bdf8"/>
+  <line x1="14" y1="2" x2="14" y2="5.5" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="14" y1="22.5" x2="14" y2="26" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="2" y1="14" x2="5.5" y2="14" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="22.5" y1="14" x2="26" y2="14" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></div>
                 <div class="metric-val" id="mv-ping">--</div>
                 <div class="metric-unit">ms</div>
                 <div class="metric-label">Ping</div>
             </div>
             <div class="metric-card metric-main" id="mc-dl">
-                <div class="metric-icon">⬇</div>
+                <div class="metric-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto">
+  <line x1="14" y1="4" x2="14" y2="19" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+  <polyline points="7,13 14,20 21,13" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <line x1="5" y1="24" x2="23" y2="24" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></div>
                 <div class="metric-val" id="mv-dl">--</div>
                 <div class="metric-unit">Mbps</div>
                 <div class="metric-label">Download</div>
             </div>
             <div class="metric-card metric-main" id="mc-ul">
-                <div class="metric-icon">⬆</div>
+                <div class="metric-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto">
+  <line x1="14" y1="24" x2="14" y2="9" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+  <polyline points="7,15 14,8 21,15" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <line x1="5" y1="24" x2="23" y2="24" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></div>
                 <div class="metric-val" id="mv-ul">--</div>
                 <div class="metric-unit">Mbps</div>
                 <div class="metric-label">Upload</div>
             </div>
             <div class="metric-card" id="mc-jitter">
-                <div class="metric-icon">〜</div>
+                <div class="metric-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto">
+  <path d="M2,14 C4,14 5,8 7,8 C9,8 10,20 12,20 C14,20 15,8 17,8 C19,8 20,20 22,20 C24,20 25,14 26,14" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg></div>
                 <div class="metric-val" id="mv-jitter">--</div>
                 <div class="metric-unit">ms</div>
                 <div class="metric-label">Jitter</div>
@@ -303,25 +323,23 @@
 
 <!-- CTA -->
 <section class="cta-section">
-    <h2>האינטרנט שלך לא מספיק מהיר?</h2>
-    <p>FiberFix מזהה ופותרת כל בעיית רשת — מהאינטרנט ועד לנקודות הקצה בבית שלך</p>
+    <h2>ה-WIFI איטי?<br>תשאיר את זה לנו</h2>
+    <p>FiberFix מזהה ופותרת כל בעיית רשת — דברו איתנו</p>
     <div class="btn-cta-wrap">
-        <a href="contact.html" class="btn btn-primary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            דברו איתנו
+        <a href="contact.html" class="btn btn-primary btn-no-pulse">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            טופס יצירת קשר
         </a>
         <a href="https://wa.me/972504086363" class="btn btn-wa" target="_blank" rel="noopener noreferrer">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.561 4.14 1.535 5.874L.057 23.5a.5.5 0 0 0 .609.61l5.701-1.453A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.95 9.95 0 0 1-5.127-1.415l-.367-.217-3.804.971.998-3.717-.24-.381A9.953 9.953 0 0 1 2 12C2 6.478 6.478 2 12 2s10 4.478 10 10-4.478 10-10 10z"/></svg>
-            WhatsApp
+            וואטסאפ
         </a>
     </div>
 </section>
 
 </main>
 
-<footer>
-    <p>© 2025 FiberFix — <a href="index.html">דף הבית</a> · <a href="about.html">אודות</a> · <a href="contact.html">צרו קשר</a> · <a href="speedtest.html">בדיקת מהירות</a></p>
-</footer>
+<footer>© כל הזכויות שמורות ל-FiberFix 2025 &nbsp;·&nbsp; <a href="index.html">דף הבית</a> &nbsp;·&nbsp; <a href="about.html">אודות</a> &nbsp;·&nbsp; <a href="contact.html">יצירת קשר</a></footer>
 
 <!-- HAMBURGER -->
 <script>
@@ -340,11 +358,12 @@
 <!-- SPEED TEST -->
 <script>
 (function(){
-    const CF      = 'https://speed.cloudflare.com/__down?bytes=';
-    const CF_UP   = 'https://speed.cloudflare.com/__up';
+    const CF_DOWN  = 'https://speed.cloudflare.com/__down?bytes=';
+    const CF_UP    = 'https://speed.cloudflare.com/__up';
     const ARC_CIRC = 552.9;
     const ARC_LEN  = 368.6;
-    const MAX_MBPS  = 500;
+    const MAX_MBPS = 500;
+    const TEST_MS  = 10000;   // 10 seconds per phase
 
     const gaugeArc    = document.getElementById('gaugeArc');
     const gaugeNum    = document.getElementById('gaugeNum');
@@ -366,175 +385,148 @@
     const mcUl        = document.getElementById('mc-ul');
     const mcJitter    = document.getElementById('mc-jitter');
 
-    /* ── gauge helpers ─────────────────────────────────── */
+    /* ── helpers ───────────────────────────────────────── */
     function setGauge(mbps, mode) {
-        const pct  = Math.min(1, mbps / MAX_MBPS);
-        const fill = pct * ARC_LEN;
+        const fill = Math.min(1, mbps / MAX_MBPS) * ARC_LEN;
         gaugeArc.style.strokeDasharray = fill + ' ' + (ARC_CIRC - fill);
         let c;
         if (mode === 'ul') {
-            if (mbps < 10)       c = '#ef4444';
-            else if (mbps < 30)  c = '#a855f7';
-            else if (mbps < 100) c = '#8b5cf6';
-            else if (mbps < 250) c = '#6366f1';
-            else                 c = '#818cf8';
+            c = mbps<10?'#ef4444':mbps<30?'#a855f7':mbps<100?'#8b5cf6':mbps<250?'#6366f1':'#818cf8';
         } else {
-            if (mbps < 10)       c = '#ef4444';
-            else if (mbps < 30)  c = '#f97316';
-            else if (mbps < 100) c = '#eab308';
-            else if (mbps < 250) c = '#22c55e';
-            else                 c = '#0ea5e9';
+            c = mbps<10?'#ef4444':mbps<30?'#f97316':mbps<100?'#eab308':mbps<250?'#22c55e':'#0ea5e9';
         }
         gaugeArc.style.stroke = c;
     }
-
-    function fmt(v) {
-        return v >= 100 ? Math.round(v).toString() : (Math.round(v * 10) / 10).toString();
-    }
-
-    function interpretSpeed(dl) {
-        if (dl < 5)   return {cls:'speed-bad',  label:'איטי מאוד', desc:'גלישה בסיסית קשה — מומלץ לבדוק את הרשת', cta:true};
-        if (dl < 25)  return {cls:'speed-slow', label:'איטי',      desc:'מתאים לגלישה פשוטה בלבד — ללא שידור HD', cta:true};
-        if (dl < 100) return {cls:'speed-ok',   label:'ממוצע',     desc:'מספיק לשימוש יומיומי ושידור רגיל', cta:false};
-        if (dl < 300) return {cls:'speed-good', label:'מהיר',      desc:'חיבור טוב — מתאים לעבודה, גיימינג ו-4K', cta:false};
-        return               {cls:'speed-fast', label:'מהיר מאוד', desc:'חיבור מעולה — מספיק למשפחה שלמה בו-זמנית', cta:false};
+    function fmt(v){ return v>=100?Math.round(v).toString():(Math.round(v*10)/10).toString(); }
+    function interpretSpeed(dl){
+        if(dl<5)   return{cls:'speed-bad', label:'איטי מאוד',desc:'גלישה בסיסית קשה — מומלץ לבדוק את הרשת',cta:true};
+        if(dl<25)  return{cls:'speed-slow',label:'איטי',     desc:'מתאים לגלישה פשוטה בלבד — ללא שידור HD',cta:true};
+        if(dl<100) return{cls:'speed-ok',  label:'ממוצע',    desc:'מספיק לשימוש יומיומי ושידור רגיל',cta:false};
+        if(dl<300) return{cls:'speed-good',label:'מהיר',     desc:'חיבור טוב — מתאים לעבודה, גיימינג ו-4K',cta:false};
+        return          {cls:'speed-fast',label:'מהיר מאוד',desc:'חיבור מעולה — מספיק למשפחה שלמה בו-זמנית',cta:false};
     }
 
     /* ── PING ──────────────────────────────────────────── */
     async function measurePing() {
         gaugePhase.textContent = 'מודד Ping...';
-        statusText.textContent = 'בדיקת השהייה — שולח 10 בקשות';
+        statusText.textContent = 'בדיקת השהייה';
         const times = [];
         for (let i = 0; i < 10; i++) {
-            const t0 = performance.now();
-            await fetch(CF + '0', {cache:'no-store', mode:'cors'});
-            times.push(performance.now() - t0);
+            try {
+                const t0 = performance.now();
+                await fetch(CF_DOWN + '0', {cache:'no-store', mode:'cors'});
+                times.push(performance.now() - t0);
+            } catch(e) {}
         }
-        times.sort((a, b) => a - b);
-        const trimmed = times.slice(2, -2);
-        const avg    = trimmed.reduce((a, b) => a + b, 0) / trimmed.length;
-        const jitter = Math.round(Math.max(...trimmed) - Math.min(...trimmed));
-        const ping   = Math.round(avg);
-        mvPing.textContent    = ping;
-        mvJitter.textContent  = jitter;
-        mcPing.classList.add('done');
-        mcJitter.classList.add('done');
-        gaugeNum.textContent  = ping;
-        gaugePhase.textContent = 'Ping: ' + ping + ' ms';
-        return {ping, jitter};
+        if (times.length < 3) {
+            mvPing.textContent='--'; mvJitter.textContent='--';
+            mcPing.classList.add('done'); mcJitter.classList.add('done');
+            return;
+        }
+        times.sort((a,b)=>a-b);
+        const tr     = times.slice(1,-1);
+        const ping   = Math.round(tr.reduce((a,b)=>a+b,0)/tr.length);
+        const jitter = Math.round(Math.max(...tr)-Math.min(...tr));
+        mvPing.textContent=ping; mvJitter.textContent=jitter;
+        mcPing.classList.add('done'); mcJitter.classList.add('done');
+        gaugeNum.textContent=ping;
+        gaugePhase.textContent='Ping: '+ping+' ms';
     }
 
     /* ── DOWNLOAD ───────────────────────────────────────── */
     async function measureDownload() {
         gaugePhase.textContent = 'מודד Download...';
-        statusText.textContent = 'בדיקת הורדה — טוען נתונים (עד 12 שניות)';
+        statusText.textContent = 'בדיקת הורדה (10 שניות)';
         gaugeNum.textContent   = '--';
         gaugeArc.style.stroke  = '#0ea5e9';
 
-        const BYTES        = 25 * 1024 * 1024;
-        const MIN_DURATION = 12000;   // 12 seconds
-        const MAX_PASSES   = 5;
+        const CHUNK = 4 * 1024 * 1024;   // 4 MB per request
+        const t0    = performance.now();
+        let total   = 0, mbps = 0, fails = 0;
 
-        const t0       = performance.now();
-        let totalBytes = 0, finalMbps = 0, pass = 0;
-
-        while (performance.now() - t0 < MIN_DURATION && pass < MAX_PASSES) {
-            pass++;
+        while (performance.now() - t0 < TEST_MS && fails < 3) {
+            const ctrl = new AbortController();
+            const tid  = setTimeout(() => ctrl.abort(), TEST_MS - (performance.now() - t0) + 500);
             try {
-                const res    = await fetch(CF + BYTES, {cache:'no-store', mode:'cors'});
+                const res    = await fetch(CF_DOWN + CHUNK, {cache:'no-store', mode:'cors', signal:ctrl.signal});
                 const reader = res.body.getReader();
                 while (true) {
                     const {done, value} = await reader.read();
                     if (done) break;
-                    totalBytes += value.byteLength;
-                    const elapsed = (performance.now() - t0) / 1000;
-                    if (elapsed > 0.3) {
-                        const mbps = (totalBytes * 8) / elapsed / 1e6;
-                        finalMbps  = mbps;
+                    total += value.byteLength;
+                    const el = (performance.now() - t0) / 1000;
+                    if (el > 0.3) {
+                        mbps = (total * 8) / el / 1e6;
                         setGauge(mbps, 'dl');
                         gaugeNum.textContent = fmt(mbps);
                         mvDl.textContent     = fmt(mbps);
                     }
                 }
-            } catch(e) { break; }
+                clearTimeout(tid);
+                fails = 0;
+            } catch(e) {
+                clearTimeout(tid);
+                if (e.name !== 'AbortError') {
+                    fails++;
+                    await new Promise(r => setTimeout(r, 200));
+                }
+            }
         }
 
-        const elapsed = (performance.now() - t0) / 1000;
-        if (totalBytes > 0) finalMbps = (totalBytes * 8) / elapsed / 1e6;
-        setGauge(finalMbps, 'dl');
-        gaugeNum.textContent = fmt(finalMbps);
-        mvDl.textContent     = fmt(finalMbps);
+        if (total > 0) mbps = (total * 8) / ((performance.now() - t0) / 1000) / 1e6;
+        setGauge(mbps, 'dl');
+        gaugeNum.textContent = total > 0 ? fmt(mbps) : '--';
+        mvDl.textContent     = total > 0 ? fmt(mbps) : '--';
         mcDl.classList.add('done');
-        return finalMbps;
+        return mbps;
     }
 
     /* ── UPLOAD ─────────────────────────────────────────── */
-    /*
-     * Strategy: XHR with upload.onprogress for real-time gauge.
-     * Each pass sends 4 MB. We loop until 12 seconds elapsed.
-     * On total failure (≥3 errors) we mark as '--'.
-     */
-    function singleUpload(blob, passedBytes, t0) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', CF_UP, true);
-            xhr.timeout = 30000;
-
-            xhr.upload.addEventListener('progress', (e) => {
-                if (!e.lengthComputable) return;
-                const sofar   = passedBytes + e.loaded;
-                const elapsed = (performance.now() - t0) / 1000;
-                if (elapsed < 0.4 || sofar === 0) return;
-                const mbps = (sofar * 8) / elapsed / 1e6;
-                setGauge(mbps, 'ul');
-                gaugeNum.textContent = fmt(mbps);
-                mvUl.textContent     = fmt(mbps);
-            });
-
-            xhr.addEventListener('load',    () => resolve(passedBytes + blob.size));
-            xhr.addEventListener('error',   () => reject(new Error('net')));
-            xhr.addEventListener('timeout', () => reject(new Error('timeout')));
-            xhr.send(blob);
-        });
-    }
-
     async function measureUpload() {
         gaugePhase.textContent = 'מודד Upload...';
-        statusText.textContent = 'בדיקת העלאה — שולח נתונים (עד 12 שניות)';
+        statusText.textContent = 'שולח נתונים...';
         gaugeNum.textContent   = '--';
         gaugeArc.style.strokeDasharray = '0 ' + ARC_CIRC;
         gaugeArc.style.stroke  = '#818cf8';
 
-        const CHUNK        = 4 * 1024 * 1024;   // 4 MB — big enough for real-time progress
-        const MIN_DURATION = 12000;
-        const MAX_FAILS    = 3;
+        const CHUNK = 512 * 1024;  // 512 KB
+        const buf   = new Uint8Array(CHUNK);
+        for (let off = 0; off < CHUNK; off += 65536)
+            crypto.getRandomValues(buf.subarray(off, Math.min(off+65536, CHUNK)));
 
-        // Random-filled blob — avoids browser zero-compression shortcuts
-        const buf = new Uint8Array(CHUNK);
-        crypto.getRandomValues(buf);
-        const blob = new Blob([buf]);
+        const endpoints = [
+            {url: CF_UP,                       mode: 'no-cors', blob: new Blob([buf], {type:'text/plain'})},
+            {url: 'https://httpbin.org/post',  mode: 'cors',    blob: new Blob([buf])}
+        ];
 
-        const t0       = performance.now();
-        let totalSent  = 0, finalMbps = 0, fails = 0;
+        const t0 = performance.now();
+        let totalSent = 0, finalMbps = 0;
 
-        while (performance.now() - t0 < MIN_DURATION && fails < MAX_FAILS) {
-            try {
-                totalSent = await singleUpload(blob, totalSent, t0);
-                fails = 0;                                  // reset on success
-                const elapsed = (performance.now() - t0) / 1000;
-                finalMbps = (totalSent * 8) / elapsed / 1e6;
-                setGauge(finalMbps, 'ul');
-                gaugeNum.textContent = fmt(finalMbps);
-                mvUl.textContent     = fmt(finalMbps);
-            } catch(e) {
-                fails++;
-                await new Promise(r => setTimeout(r, 300));
+        for (const ep of endpoints) {
+            let fails = 0;
+            while (performance.now() - t0 < TEST_MS && fails < 3) {
+                const ctrl = new AbortController();
+                const tid  = setTimeout(() => ctrl.abort(), 7000);
+                try {
+                    await fetch(ep.url, {method:'POST', body:ep.blob, mode:ep.mode, cache:'no-store', signal:ctrl.signal});
+                    clearTimeout(tid);
+                    fails = 0;
+                    totalSent += CHUNK;
+                    const el = (performance.now() - t0) / 1000;
+                    finalMbps = (totalSent * 8) / el / 1e6;
+                    setGauge(finalMbps, 'ul');
+                    gaugeNum.textContent = fmt(finalMbps);
+                    mvUl.textContent     = fmt(finalMbps);
+                } catch(e) {
+                    clearTimeout(tid);
+                    fails++;
+                    await new Promise(r => setTimeout(r, 300));
+                }
             }
+            if (totalSent > 0) break;
         }
 
-        const elapsed = (performance.now() - t0) / 1000;
-        if (totalSent > 0 && elapsed > 0) finalMbps = (totalSent * 8) / elapsed / 1e6;
-
+        if (totalSent > 0) finalMbps = (totalSent * 8) / ((performance.now() - t0) / 1000) / 1e6;
         setGauge(finalMbps, 'ul');
         gaugeNum.textContent = finalMbps > 0 ? fmt(finalMbps) : '--';
         mvUl.textContent     = finalMbps > 0 ? fmt(finalMbps) : '--';
@@ -546,48 +538,39 @@
     async function runTest() {
         startBtn.disabled = true;
         retestWrap.style.display = 'none';
-        interp.style.display     = 'none';
-        interp.className         = 'interpretation';
+        interp.style.display = 'none';
+        interp.className = 'interpretation';
         gaugeArc.style.strokeDasharray = '0 ' + ARC_CIRC;
-        gaugeArc.style.stroke    = '#0ea5e9';
-        gaugeNum.textContent     = '--';
-        gaugePhase.textContent   = '';
-        mvPing.textContent = '--'; mvDl.textContent = '--';
-        mvUl.textContent   = '--'; mvJitter.textContent = '--';
+        gaugeArc.style.stroke = '#0ea5e9';
+        gaugeNum.textContent = '--';
+        gaugePhase.textContent = '';
+        mvPing.textContent='--'; mvDl.textContent='--';
+        mvUl.textContent='--';  mvJitter.textContent='--';
         [mcPing, mcDl, mcUl, mcJitter].forEach(el => el.classList.remove('done'));
 
-        try {
-            await measurePing();
-            await new Promise(r => setTimeout(r, 400));
+        await measurePing();
+        await new Promise(r => setTimeout(r, 400));
+        const dl = await measureDownload();
+        await new Promise(r => setTimeout(r, 400));
+        await measureUpload();
 
-            const dl = await measureDownload();
-            await new Promise(r => setTimeout(r, 400));
+        if (dl > 0) { setGauge(dl,'dl'); gaugeNum.textContent = fmt(dl); }
+        statusText.textContent  = '';
+        gaugePhase.textContent  = 'הבדיקה הסתיימה ✓';
 
-            const ul = await measureUpload();
-
-            // Return gauge to final download reading
-            setGauge(dl, 'dl');
-            gaugeNum.textContent   = fmt(dl);
-            statusText.textContent = '';
-            gaugePhase.textContent = 'הבדיקה הסתיימה ✓';
-
+        if (dl > 0) {
             const res = interpretSpeed(dl);
-            interp.className        = 'interpretation ' + res.cls;
+            interp.className      = 'interpretation ' + res.cls;
             interpBadge.textContent = res.label;
             interpDesc.textContent  = res.desc;
             interpCta.innerHTML     = res.cta
                 ? 'בעיה ברשת? <a href="contact.html">פנה ל-FiberFix</a> — נאתר ונפתור' : '';
             interp.style.display = 'block';
-
-        } catch(e) {
-            statusText.textContent = 'שגיאה בבדיקה — בדוק חיבור לאינטרנט ונסה שוב';
-            gaugePhase.textContent = '';
         }
 
         startBtn.disabled = false;
         retestWrap.style.display = 'block';
     }
-
     startBtn.addEventListener('click', runTest);
     retestBtn.addEventListener('click', runTest);
 })();

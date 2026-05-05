@@ -149,10 +149,10 @@
         
         /* ── Navbar contact info ── */
         .navbar-contact{display:flex;align-items:center;gap:16px;direction:ltr}
-        .nbc-item{display:flex;align-items:center;gap:6px;color:var(--text-bright);font-size:13px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color 0.2s}
-        .nbc-item:hover{color:#ffffff}
-        .nbc-item svg{opacity:0.9;flex-shrink:0}
-        .nbc-sep{width:1px;height:13px;background:rgba(14,165,233,0.3);flex-shrink:0}
+        .nbc-item{display:flex;align-items:center;gap:6px;color:var(--text-bright);font-size:13px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color 0.2s,text-shadow 0.2s}
+        .nbc-item:hover{color:#38bdf8;text-shadow:0 0 12px rgba(56,189,248,0.4)}
+        .nbc-item svg{opacity:0.9;flex-shrink:0;transition:filter 0.2s,opacity 0.2s}.nbc-item:hover svg{opacity:1;filter:drop-shadow(0 0 4px rgba(56,189,248,0.6))}
+        .nbc-sep{width:1px;height:13px;background:rgba(216,224,240,0.25);flex-shrink:0}
         
         /* ── CTA button – GPU-composited 120 Hz animation ── */
         .btn-primary{will-change:transform;animation:ctaFloat 2.4s cubic-bezier(0.45,0,0.55,1) infinite;position:relative}
@@ -164,6 +164,18 @@
         a:focus-visible,button:focus-visible{outline:2px solid #38bdf8;outline-offset:3px;border-radius:4px}
     
         .btn-no-pulse,.btn-no-pulse::after{animation:none!important}
+
+        .st-promo-section{background:linear-gradient(180deg,rgba(10,14,26,0) 0%,rgba(14,22,45,0.7) 40%,rgba(10,14,26,0) 100%);padding:72px 24px;text-align:center;position:relative}
+        .st-promo-section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;max-width:100%;height:100%;background:radial-gradient(ellipse at center,rgba(14,165,233,0.06) 0%,transparent 70%);pointer-events:none}
+        .st-promo-inner{max-width:640px;margin:0 auto;position:relative}
+        .st-promo-title{font-size:clamp(1.9rem,4vw,2.6rem);font-weight:900;color:var(--heading);margin:14px 0 10px;letter-spacing:-0.04em;line-height:1.15}
+        .st-promo-sub{color:var(--text);font-size:1rem;margin-bottom:28px;max-width:460px;margin-inline:auto;line-height:1.6}
+        .st-mini-metrics{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:28px}
+        .st-mini-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:72px;box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+        .st-mini-icon{height:22px;display:flex;align-items:center;justify-content:center}
+        .st-mini-label{font-size:11px;font-weight:600;color:var(--text);letter-spacing:0.3px}
+        .st-promo-btn{padding:14px 36px;font-size:16px;margin-top:4px}
+        .btn-no-pulse,.btn-no-pulse::after{animation:none!important;will-change:auto}
     </style>
 
     <script type="application/ld+json">
@@ -319,7 +331,7 @@
 </div>
 
 </main>
-<footer>© כל הזכויות שמורות ל‑FiberFix — 2026 &nbsp;·&nbsp; <a href="index.html">דף הבית</a> &nbsp;·&nbsp; <a href="contact.html">יצירת קשר</a></footer>
+<footer>© כל הזכויות שמורות ל-FiberFix 2025 &nbsp;·&nbsp; <a href="index.html">דף הבית</a> &nbsp;·&nbsp; <a href="speedtest.html">בדיקת מהירות</a> &nbsp;·&nbsp; <a href="contact.html">יצירת קשר</a></footer>
 
 <script>
     const hamburger = document.getElementById('hamburger');
@@ -383,65 +395,3 @@
   }
 
   function draw(){
-    ctx.clearRect(0,0,W,H);
-    const t=Date.now()/1000;
-
-    // draw connections
-    for(let i=0;i<nodes.length;i++){
-      for(let j=i+1;j<nodes.length;j++){
-        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
-        const dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<MAX_DIST){
-          const alpha=(1-dist/MAX_DIST)*0.22;
-          ctx.beginPath();
-          ctx.strokeStyle=BLUE+alpha+')';
-          ctx.lineWidth=0.8;
-          ctx.moveTo(nodes[i].x,nodes[i].y);
-          ctx.lineTo(nodes[j].x,nodes[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-
-    // draw nodes
-    nodes.forEach(n=>{
-      const pulse=0.7+0.3*Math.sin(t*1.4+n.pulse);
-      // outer glow
-      const grad=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*4);
-      grad.addColorStop(0,BLUE+(0.18*pulse)+')');
-      grad.addColorStop(1,BLUE+'0)');
-      ctx.beginPath();
-      ctx.arc(n.x,n.y,n.r*4,0,Math.PI*2);
-      ctx.fillStyle=grad;
-      ctx.fill();
-      // core dot
-      ctx.beginPath();
-      ctx.arc(n.x,n.y,n.r*pulse,0,Math.PI*2);
-      ctx.fillStyle=CYAN+(0.55*pulse)+')';
-      ctx.fill();
-    });
-
-    // move nodes
-    nodes.forEach(n=>{
-      n.x+=n.vx; n.y+=n.vy;
-      if(n.x<-20)n.x=W+20; if(n.x>W+20)n.x=-20;
-      if(n.y<-20)n.y=H+20; if(n.y>H+20)n.y=-20;
-    });
-
-    RAF=requestAnimationFrame(draw);
-  }
-
-  window.addEventListener('resize',()=>{resize();createNodes()});
-  resize(); createNodes(); draw();
-
-  // Pause animation when tab not visible (saves battery)
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { cancelAnimationFrame(RAF); }
-    else { RAF = requestAnimationFrame(draw); }
-  });
-
-})();
-</script>
-
-</body>
-</html>

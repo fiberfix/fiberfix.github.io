@@ -186,10 +186,10 @@
         
         /* ── Navbar contact info ── */
         .navbar-contact{display:flex;align-items:center;gap:16px;direction:ltr}
-        .nbc-item{display:flex;align-items:center;gap:6px;color:var(--text-bright);font-size:13px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color 0.2s}
-        .nbc-item:hover{color:#ffffff}
-        .nbc-item svg{opacity:0.9;flex-shrink:0}
-        .nbc-sep{width:1px;height:13px;background:rgba(14,165,233,0.3);flex-shrink:0}
+        .nbc-item{display:flex;align-items:center;gap:6px;color:var(--text-bright);font-size:13px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color 0.2s,text-shadow 0.2s}
+        .nbc-item:hover{color:#38bdf8;text-shadow:0 0 12px rgba(56,189,248,0.4)}
+        .nbc-item svg{opacity:0.9;flex-shrink:0;transition:filter 0.2s,opacity 0.2s}.nbc-item:hover svg{opacity:1;filter:drop-shadow(0 0 4px rgba(56,189,248,0.6))}
+        .nbc-sep{width:1px;height:13px;background:rgba(216,224,240,0.25);flex-shrink:0}
         
         /* ── CTA button shimmer animation ── */
         @keyframes gentleGlow{0%,100%{box-shadow:0 4px 22px rgba(38,95,165,0.45),inset 0 1px 0 rgba(165,215,240,0.22)}50%{box-shadow:0 6px 32px rgba(14,165,233,0.55),0 0 0 3px rgba(14,165,233,0.08),inset 0 1px 0 rgba(165,215,240,0.28)}}
@@ -372,7 +372,7 @@
 
 </main>
 
-<footer>© כל הזכויות שמורות ל‑FiberFix — 2026 &nbsp;·&nbsp; <a href="index.html">דף הבית</a> &nbsp;·&nbsp; <a href="about.html">אודות</a></footer>
+<footer>© כל הזכויות שמורות ל-FiberFix 2025 &nbsp;·&nbsp; <a href="index.html">דף הבית</a> &nbsp;·&nbsp; <a href="about.html">אודות</a> &nbsp;·&nbsp; <a href="speedtest.html">בדיקת מהירות</a></footer>
 
 <script>
     const hamburger = document.getElementById('hamburger');
@@ -459,35 +459,4 @@
       const grad=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*4);
       grad.addColorStop(0,BLUE+(0.18*pulse)+')');
       grad.addColorStop(1,BLUE+'0)');
-      ctx.beginPath();
-      ctx.arc(n.x,n.y,n.r*4,0,Math.PI*2);
-      ctx.fillStyle=grad;
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(n.x,n.y,n.r*pulse,0,Math.PI*2);
-      ctx.fillStyle=CYAN+(0.55*pulse)+')';
-      ctx.fill();
-    });
-
-    nodes.forEach(n=>{
-      n.x+=n.vx; n.y+=n.vy;
-      if(n.x<-20)n.x=W+20; if(n.x>W+20)n.x=-20;
-      if(n.y<-20)n.y=H+20; if(n.y>H+20)n.y=-20;
-    });
-
-    RAF=requestAnimationFrame(draw);
-  }
-
-  window.addEventListener('resize',()=>{resize();createNodes()});
-  resize(); createNodes(); draw();
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { cancelAnimationFrame(RAF); }
-    else { RAF = requestAnimationFrame(draw); }
-  });
-
-})();
-</script>
-
-</body>
-</html>
+      ctx.begi
