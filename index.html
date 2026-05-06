@@ -709,4 +709,63 @@
   /* build dots */
   phrases.forEach(function(_, i){
     var d = document.createElement('button');
-    d.classNa
+    d.className = 'phrase-dot';
+    d.setAttribute('aria-label', 'משפט ' + (i+1));
+    d.addEventListener('click', function(){ goTo(i); });
+    dotsWrap.appendChild(d);
+  });
+
+  function getDots(){ return dotsWrap.querySelectorAll('.phrase-dot'); }
+
+  function showPhrase(i){
+    clearTimeout(progressTimer);
+    progressEl.style.transition = 'none';
+    progressEl.style.width = '0%';
+
+    el.classList.remove('ph-in');
+    el.classList.add('ph-out');
+
+    setTimeout(function(){
+      el.textContent = phrases[i];
+      el.classList.remove('ph-out');
+      void el.offsetWidth;
+      el.classList.add('ph-in');
+
+      getDots().forEach(function(d, di){ d.classList.toggle('active', di === i); });
+
+      progressEl.style.transition = 'none';
+      progressEl.style.width = '0%';
+      void progressEl.offsetWidth;
+      progressEl.style.transition = 'width ' + DURATION + 'ms linear';
+      progressEl.style.width = '100%';
+
+      clearTimeout(timer);
+      timer = setTimeout(function(){
+        idx = (i + 1) % phrases.length;
+        showPhrase(idx);
+      }, DURATION);
+    }, 420);
+  }
+
+  function goTo(i){
+    clearTimeout(timer);
+    idx = i;
+    showPhrase(idx);
+  }
+
+  // init
+  el.textContent = phrases[0];
+  el.classList.add('ph-in');
+  getDots().forEach(function(d, di){ d.classList.toggle('active', di === 0); });
+  progressEl.style.transition = 'width ' + DURATION + 'ms linear';
+  progressEl.style.width = '100%';
+  timer = setTimeout(function(){
+    idx = 1;
+    showPhrase(idx);
+  }, DURATION);
+
+})();
+</script>
+
+</body>
+</html>
