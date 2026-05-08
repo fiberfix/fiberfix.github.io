@@ -372,20 +372,9 @@
 
 </main>
 
-<footer>© כל הזכויות שמורות ל-FiberFix 2025 &nbsp;·&nbsp; <a href="index.html">דף הבית</a> &nbsp;·&nbsp; <a href="about.html">אודות</a> &nbsp;·&nbsp; <a href="speedtest.html">בדיקת מהירות</a></footer>
+<footer>© כל הזכויות שמורות ל-FiberFix 2026 &nbsp;·&nbsp; <a href="index.html">דף הבית</a> &nbsp;·&nbsp; <a href="about.html">אודות</a> &nbsp;·&nbsp; <a href="speedtest.html">בדיקת מהירות</a></footer>
 
 <script>
-    const hamburger = document.getElementById('hamburger');
-    const navLinks  = document.getElementById('navLinks');
-    hamburger.addEventListener('click', () => {
-        const open = navLinks.classList.toggle('active');
-        hamburger.textContent = open ? '✕' : '☰';
-        hamburger.setAttribute('aria-expanded', String(open));
-    });
-    document.querySelectorAll('.navbar-links a').forEach(a => {
-        a.addEventListener('click', () => { navLinks.classList.remove('active'); hamburger.textContent='☰'; });
-    });
-
     const form = document.getElementById('contactForm');
     const successMsg = document.getElementById('successMsg');
     form.addEventListener('submit', async (e) => {
@@ -400,63 +389,6 @@
     });
 </script>
 
-<script>
-    function resetSocialBtns() {
-        document.querySelectorAll('.social-btn').forEach(function(btn) {
-            btn.classList.add('no-hover');
-            setTimeout(function() { btn.classList.remove('no-hover'); }, 350);
-        });
-    }
-    window.addEventListener('pageshow', resetSocialBtns);
-    document.addEventListener('visibilitychange', function() { if (!document.hidden) resetSocialBtns(); });
-
-(function(){
-  const canvas = document.getElementById('networkCanvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, nodes=[], RAF;
-  const COUNT=38, MAX_DIST=160, NODE_R=2.2;
-  const BLUE='rgba(14,165,233,', CYAN='rgba(56,189,248,';
-
-  function resize(){
-    W=canvas.width=window.innerWidth;
-    H=canvas.height=window.innerHeight;
-  }
-
-  function createNodes(){
-    nodes=[];
-    for(let i=0;i<COUNT;i++){
-      nodes.push({
-        x:Math.random()*W, y:Math.random()*H,
-        vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
-        r:NODE_R+(Math.random()*1.2),
-        pulse:Math.random()*Math.PI*2
-      });
-    }
-  }
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    const t=Date.now()/1000;
-
-    for(let i=0;i<nodes.length;i++){
-      for(let j=i+1;j<nodes.length;j++){
-        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
-        const dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<MAX_DIST){
-          const alpha=(1-dist/MAX_DIST)*0.22;
-          ctx.beginPath();
-          ctx.strokeStyle=BLUE+alpha+')';
-          ctx.lineWidth=0.8;
-          ctx.moveTo(nodes[i].x,nodes[i].y);
-          ctx.lineTo(nodes[j].x,nodes[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-
-    nodes.forEach(n=>{
-      const pulse=0.7+0.3*Math.sin(t*1.4+n.pulse);
-      const grad=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*4);
-      grad.addColorStop(0,BLUE+(0.18*pulse)+')');
-      grad.addColorStop(1,BLUE+'0)');
-      ctx.begi
+<script src="shared.js"></script>
+</body>
+</html>
