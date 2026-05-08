@@ -363,7 +363,7 @@
             <button type="submit" class="submit-btn" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שלח פנייה</button>
         </form>
 
-        <div class="success-message" id="successMsg">
+        <div class="success-message" id="successMsg" aria-live="polite">
             <div class="si">✅</div>
             <h3>הפנייה נשלחה בהצלחה!</h3>
             <p>נחזור אליך בהקדם האפשרי 😊</p>
@@ -380,12 +380,13 @@
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = form.querySelector('.submit-btn');
-        btn.textContent = '⏳ שולח...'; btn.disabled = true;
+        const origHTML = btn.innerHTML;
+        btn.innerHTML = '⏳ שולח...'; btn.disabled = true;
         try {
             const res = await fetch(form.action, { method:'POST', body:new FormData(form), headers:{'Accept':'application/json'} });
             if (res.ok) { form.style.display='none'; successMsg.style.display='block'; }
-            else { btn.textContent='❌ שגיאה — נסה שוב'; btn.disabled=false; }
-        } catch { btn.textContent='❌ שגיאה — נסה שוב'; btn.disabled=false; }
+            else { btn.innerHTML = '❌ שגיאה — נסה שוב'; btn.disabled=false; setTimeout(()=>{btn.innerHTML=origHTML;},3000); }
+        } catch { btn.innerHTML = '❌ שגיאה — נסה שוב'; btn.disabled=false; setTimeout(()=>{btn.innerHTML=origHTML;},3000); }
     });
 </script>
 

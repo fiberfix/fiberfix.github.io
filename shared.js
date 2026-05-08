@@ -114,6 +114,7 @@
   }
 
   window.addEventListener('resize', function () { resize(); createNodes(); });
+  window.addEventListener('pagehide', function () { cancelAnimationFrame(RAF); });
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) { cancelAnimationFrame(RAF); }
     else { RAF = requestAnimationFrame(draw); }
