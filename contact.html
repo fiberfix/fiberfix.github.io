@@ -321,7 +321,7 @@
     <!-- טופס -->
     <div class="form-wrapper anim-4">
         <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:8px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> טופס יצירת קשר</h2>
-        <form id="contactForm" action="https://formspree.io/f/xdaboeav" method="POST">
+        <form id="contactForm" action="https://formsubmit.co/info@fiberfix.co.il" method="POST">
 
             <div class="form-group">
                 <label for="field-name">שם מלא *</label>
@@ -357,9 +357,12 @@
                 <textarea id="field-message" name="message" placeholder="תארו בקצרה את פנייתכם"></textarea>
             </div>
 
-            
-            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <!-- Formsubmit config -->
             <input type="hidden" name="_subject" value="פנייה חדשה מאתר FiberFix">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="box">
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+
             <button type="submit" class="submit-btn" style="display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שלח פנייה</button>
         </form>
 
@@ -377,16 +380,32 @@
 <script>
     const form = document.getElementById('contactForm');
     const successMsg = document.getElementById('successMsg');
-    form.addEventListener('submit', async (e) => {
+
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         const btn = form.querySelector('.submit-btn');
         const origHTML = btn.innerHTML;
-        btn.innerHTML = '⏳ שולח...'; btn.disabled = true;
+        btn.innerHTML = '⏳ שולח...';
+        btn.disabled = true;
         try {
-            const res = await fetch(form.action, { method:'POST', body:new FormData(form), headers:{'Accept':'application/json'} });
-            if (res.ok) { form.style.display='none'; successMsg.style.display='block'; }
-            else { btn.innerHTML = '❌ שגיאה — נסה שוב'; btn.disabled=false; setTimeout(()=>{btn.innerHTML=origHTML;},3000); }
-        } catch { btn.innerHTML = '❌ שגיאה — נסה שוב'; btn.disabled=false; setTimeout(()=>{btn.innerHTML=origHTML;},3000); }
+            const res = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+            if (res.ok || res.redirected) {
+                form.style.display = 'none';
+                successMsg.style.display = 'block';
+            } else {
+                btn.innerHTML = '❌ שגיאה — נסה שוב';
+                btn.disabled = false;
+                setTimeout(function() { btn.innerHTML = origHTML; }, 3000);
+            }
+        } catch {
+            btn.innerHTML = '❌ שגיאה — נסה שוב';
+            btn.disabled = false;
+            setTimeout(function() { btn.innerHTML = origHTML; }, 3000);
+        }
     });
 </script>
 
