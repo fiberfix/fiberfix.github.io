@@ -137,7 +137,19 @@
     });
   }
 
-  window.addEventListener('resize', function () { resize(); createNodes(); });
+  /* BUG FIX (iOS): mobile Safari/Chrome fire `resize` every time the URL bar
+     collapses/expands DURING SCROLLING. The old handler reset the canvas and
+     re-randomized all nodes on every scroll — visible "breaking" on phones.
+     Now: debounced + only react to WIDTH changes (height-only = URL bar). */
+  var _lastW = window.innerWidth, _rzT;
+  window.addEventListener('resize', function () {
+    clearTimeout(_rzT);
+    _rzT = setTimeout(function () {
+      if (window.innerWidth === _lastW) { H = canvas.height = window.innerHeight; return; }
+      _lastW = window.innerWidth;
+      resize(); createNodes();
+    }, 150);
+  });
   window.addEventListener('pagehide', function () { cancelAnimationFrame(RAF); });
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) { cancelAnimationFrame(RAF); }
