@@ -219,6 +219,33 @@
         .hamburger{display:none;width:32px;height:32px;font-size:29px;color:var(--text-bright);cursor:pointer;background:none;border:none;padding:0;margin:0;line-height:1;align-items:center;justify-content:center;flex-shrink:0}
         .navbar-contact{display:flex;align-items:center;gap:16px;direction:ltr}.nbc-item{display:flex;align-items:center;gap:6px;color:var(--text-bright);font-size:13px;font-weight:400;text-decoration:none;white-space:nowrap;transition:color 0.2s,text-shadow 0.2s}.nbc-item:hover{color:#38bdf8;text-shadow:0 0 12px rgba(56,189,248,0.4)}.nbc-item svg{opacity:0.9;flex-shrink:0;transition:filter 0.2s,opacity 0.2s}.nbc-item:hover svg{opacity:1;filter:drop-shadow(0 0 4px rgba(56,189,248,0.6))}.nbc-sep{width:1px;height:13px;background:rgba(216,224,240,0.25);flex-shrink:0}
         @media (max-width:768px){.navbar-row-top{padding:0 18px;min-height:56px;align-items:center}.navbar-links{display:none;position:fixed;top:56px;right:0;left:0;background:rgba(19,21,28,0.98)!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;flex-direction:column;padding:16px;border-bottom:1px solid var(--border)!important;animation:slideDown 0.25s ease;gap:4px;justify-content:flex-start}.navbar-links.active{display:flex}@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}.navbar-links a{width:100%;text-align:center;padding:13px!important;font-size:16px!important}.navbar-contact{display:none}.navbar-cta{width:auto!important;align-self:center!important;justify-content:center!important;margin:4px auto!important}.hamburger{display:flex;align-items:center;justify-content:center;transform:none!important}.navbar-logo img{height:32px!important}}
+
+        /* ═══ SITE-WIDE UPDATE (synced from homepage, 2026-07-03) ═══ */
+        /* 1. no entrance animations — content appears immediately
+           (speed-test gauge/button animations are intentionally untouched) */
+        [class*="anim-"],.section-reveal,.value-card,.faq-item,.num-404,.badge-404,.title-404,.sub-404{opacity:1!important;transform:none!important;animation:none!important}
+        .section-reveal,.value-card,.faq-item{transition:none!important}
+        /* 2. no infinite button float/blur-glow (heavy on phones) */
+        .navbar-cta,.navbar-cta::after,.btn-primary,.btn-primary::after,.submit-btn,.submit-btn::after{animation:none!important}
+        .navbar-cta::after,.btn-primary::after,.submit-btn::after{display:none!important}
+        .page-hero h1 span{animation:none!important}
+        /* 3. single-row navbar: menu raised to logo/contact height, centered */
+        @media(min-width:769px){
+            .navbar{flex-direction:row;align-items:center;min-height:64px;padding:14px 12px 8px}
+            .navbar-row-top{display:contents}
+            .navbar-logo{order:1;flex:1 1 0;display:flex;justify-content:flex-start}
+            .navbar-links{order:2;flex:0 0 auto;justify-content:center;gap:6px;padding:0;margin:0}
+            .navbar-links a:not(.navbar-cta){padding:9px 13px;font-size:14.5px}
+            .navbar-links .navbar-cta{margin-right:10px!important;padding:9px 18px!important;font-size:14.5px!important}
+            .navbar-contact{order:3;flex:1 1 0;justify-content:flex-start;gap:10px}
+            .nbc-item{font-size:12.5px}
+        }
+        @media(min-width:769px) and (max-width:1120px){.navbar-contact{display:none}}
+
+        /* ── uniform background: original color, section overlay strips removed ── */
+        .cta-section,.stats-section,.st-promo-section{background:transparent}
+        .st-promo-section::before{display:none}
+        [style*="rgba(19,21,28"],[style*="rgba(24,27,37"]{background:transparent!important}
 </style>
 
 
