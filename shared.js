@@ -65,7 +65,34 @@
     }
   }
 
-  function draw() {
+  /* perf: pre-baked glow sprite — the old code created a new
+     createRadialGradient PER NODE PER FRAME (38 gradients × 60fps).
+     Now the glow is drawn once to an offscreen canvas and stamped
+     with drawImage + globalAlpha. Visually identical. */
+  var GLOW_SIZE = 64;
+  var glowSprite = (function () {
+    var oc = document.createElement('canvas');
+    oc.width = oc.height = GLOW_SIZE;
+    var octx = oc.getContext('2d');
+    var c = GLOW_SIZE / 2;
+    var g = octx.createRadialGradient(c, c, 0, c, c, c);
+    g.addColorStop(0, BLUE + '0.18)');
+    g.addColorStop(1, BLUE + '0)');
+    octx.fillStyle = g;
+    octx.fillRect(0, 0, GLOW_SIZE, GLOW_SIZE);
+    return oc;
+  })();
+
+  /* perf: background ambience — capped at 30fps (it's a subtle
+     backdrop; halves its cost, imperceptible) */
+  var FRAME_MS = 1000 / 30;
+  var lastFrame = 0;
+
+  function draw(now) {
+    RAF = requestAnimationFrame(draw);
+    if (now - lastFrame < FRAME_MS) return;
+    lastFrame = now;
+
     ctx.clearRect(0, 0, W, H);
     var t = Date.now() / 1000;
 
@@ -90,27 +117,22 @@
     /* nodes */
     nodes.forEach(function (n) {
       var pulse = 0.7 + 0.3 * Math.sin(t * 1.4 + n.pulse);
-      var grad  = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 4);
-      grad.addColorStop(0, BLUE + (0.18 * pulse) + ')');
-      grad.addColorStop(1, BLUE + '0)');
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r * 4, 0, Math.PI * 2);
-      ctx.fillStyle = grad;
-      ctx.fill();
+      var gr = n.r * 4;
+      ctx.globalAlpha = pulse;
+      ctx.drawImage(glowSprite, n.x - gr, n.y - gr, gr * 2, gr * 2);
+      ctx.globalAlpha = 1;
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r * pulse, 0, Math.PI * 2);
       ctx.fillStyle = CYAN + (0.55 * pulse) + ')';
       ctx.fill();
 
-      /* move */
-      n.x += n.vx; n.y += n.vy;
+      /* move — ×2 compensates for 30fps (same visual speed as before) */
+      n.x += n.vx * 2; n.y += n.vy * 2;
       if (n.x < -20) n.x = W + 20;
       if (n.x > W + 20) n.x = -20;
       if (n.y < -20) n.y = H + 20;
       if (n.y > H + 20) n.y = -20;
     });
-
-    RAF = requestAnimationFrame(draw);
   }
 
   window.addEventListener('resize', function () { resize(); createNodes(); });
@@ -122,5 +144,5 @@
 
   resize();
   createNodes();
-  draw();
+  RAF = requestAnimationFrame(draw);
 })();
