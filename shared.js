@@ -43,7 +43,9 @@
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
   var W, H, nodes = [], RAF;
-  var COUNT = 38, MAX_DIST = 160, NODE_R = 2.2;
+  /* perf: far fewer nodes on mobile — weak GPUs */
+  var IS_MOB = window.innerWidth < 768;
+  var COUNT = IS_MOB ? 16 : 38, MAX_DIST = 160, NODE_R = 2.2;
   var BLUE = 'rgba(14,165,233,', CYAN = 'rgba(56,189,248,';
 
   function resize() {

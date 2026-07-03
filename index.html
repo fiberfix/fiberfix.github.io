@@ -175,8 +175,12 @@
 
         /* MOBILE */
         @media (max-width:768px){
+            /* perf (iOS): backdrop-filter is extremely expensive on iPhone GPUs —
+               replace glass blur with a near-opaque background (visually identical) */
+            .navbar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(19,21,28,0.97)}
+            .navbar.navbar--top{background:transparent}
             .navbar-row-top{padding:0 18px;min-height:56px;align-items:center}
-            .navbar-links{display:none;position:fixed;top:56px;right:0;left:0;background:rgba(19,21,28,0.98);backdrop-filter:blur(20px);flex-direction:column;padding:16px;border-bottom:1px solid var(--border);animation:slideDown 0.25s ease;gap:4px;justify-content:flex-start}
+            .navbar-links{display:none;position:fixed;top:56px;right:0;left:0;background:rgba(19,21,28,0.98);flex-direction:column;padding:16px;border-bottom:1px solid var(--border);animation:slideDown 0.25s ease;gap:4px;justify-content:flex-start}
             .navbar-links.active{display:flex}
             @keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
             .navbar-links a{width:100%;text-align:center;padding:13px;font-size:16px}
@@ -188,7 +192,10 @@
             .hero-logo img{max-width:88vw;width:auto;height:auto;max-height:190px}
             .hero-visual{height:300px;margin-bottom:0}
 
-            .hero-visual .hero-logo-img{height:auto;max-height:185px;max-width:86vw}
+            .hero-visual .hero-logo-img{height:auto;max-height:185px;max-width:86vw;filter:drop-shadow(0 20px 80px rgba(14,165,233,.9)) drop-shadow(0 6px 24px rgba(0,0,0,.9))}
+            /* perf (mobile): faster reveal transitions — weak GPUs paint them slowly */
+            .section-reveal{transition:opacity .35s ease,transform .35s ease}
+            .service-card,.why-card,.faq-item{transition:opacity .3s ease,transform .3s ease,border-color .3s ease}
             .hero-stats{flex-wrap:wrap}.stat-item{padding:8px 20px}
             .section-wrap{padding:68px 18px}
             .social-bar{left:10px;bottom:80px}
@@ -748,7 +755,7 @@
     renderer.setClearColor(0x000000, 0);
     /* perf: glow sprites are soft gradients — render at reduced pixel ratio,
        visually identical but ~40% fewer pixels to fill */
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, IS_MOB ? 1.1 : 1.35));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, IS_MOB ? 1 : 1.35));
 
     /* ── glow texture ──────────────────────────────────────────────
        One canvas-radial-gradient texture, shared by every sprite.
@@ -793,9 +800,9 @@
     ];
 
     /* ── nodes ── */
-    var NODE_N = IS_MOB ? 34 : 70;
+    var NODE_N = IS_MOB ? 22 : 70;
     var CONN_D = IS_MOB ? 7.5 : 8.5;
-    var PACK_N = IS_MOB ? 14 : 30;
+    var PACK_N = IS_MOB ? 8 : 30;
 
     var nodes = [];
 
@@ -824,7 +831,8 @@
          on micro nodes it was invisible fill-rate cost (48 extra
          full-blend sprites at ~9 world-units each) */
       var sp1 = null;
-      if (i < 22) {
+      /* mobile: no nebula layer at all — phone GPUs can't afford the fill */
+      if (!IS_MOB && i < 22) {
         sp1 = mkSp(hex, 0.06, sz * 16);
         holder.add(sp1);
       }
