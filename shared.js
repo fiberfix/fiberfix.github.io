@@ -9,17 +9,30 @@
   var navLinks  = document.getElementById('navLinks');
   if (!hamburger || !navLinks) return;
 
+  function closeMenu() {
+    navLinks.classList.remove('active');
+    hamburger.textContent = '☰';
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
   hamburger.addEventListener('click', function () {
     var open = navLinks.classList.toggle('active');
     hamburger.textContent = open ? '✕' : '☰';
     hamburger.setAttribute('aria-expanded', String(open));
   });
   document.querySelectorAll('.navbar-links a').forEach(function (a) {
-    a.addEventListener('click', function () {
-      navLinks.classList.remove('active');
-      hamburger.textContent = '☰';
-      hamburger.setAttribute('aria-expanded', 'false');
-    });
+    a.addEventListener('click', closeMenu);
+  });
+
+  /* close the drawer when tapping anywhere outside it (the uncovered
+     half of the screen) — also on Escape */
+  document.addEventListener('click', function (e) {
+    if (!navLinks.classList.contains('active')) return;
+    if (navLinks.contains(e.target) || hamburger.contains(e.target)) return;
+    closeMenu();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && navLinks.classList.contains('active')) closeMenu();
   });
 })();
 
@@ -49,19 +62,18 @@
   var W, H, nodes = [], RAF;
   /* perf: far fewer nodes on mobile — weak GPUs */
   var IS_MOB = window.innerWidth < 768;
-  var COUNT = IS_MOB ? 22 : 52, MAX_DIST = IS_MOB ? 150 : 190, NODE_R = 2.6;
+  var DENSITY = IS_MOB ? 52 : 92;        /* stars per screen-height        */
+  var MAX_TOTAL = IS_MOB ? 230 : 430;    /* hard cap                       */
   /* prominence: override the per-page CSS opacity (0.6) from one place */
   canvas.style.opacity = '0.95';
-  var BLUE = 'rgba(14,165,233,', CYAN = 'rgba(56,189,248,';
-  var VIOLET = 'rgba(168,85,247,', LILAC = 'rgba(196,145,255,';
 
-  /* cursor response — desktop only, read in draw (O(n), trivial) */
-  var mouseX = -9999, mouseY = -9999;
-  if (!IS_MOB) {
-    document.addEventListener('mousemove', function (e) {
-      mouseX = e.clientX; mouseY = e.clientY;
-    }, { passive: true });
-  }
+  /* star colour families: ice-white, cyan, soft violet, warm gold */
+  var FAMS = [
+    { w: 0.52, core: 'rgba(224,242,254,', glow: 'rgba(148,200,255,' },
+    { w: 0.26, core: 'rgba(125,211,252,', glow: 'rgba(56,189,248,'  },
+    { w: 0.13, core: 'rgba(216,180,254,', glow: 'rgba(168,85,247,'  },
+    { w: 0.09, core: 'rgba(253,230,168,', glow: 'rgba(245,185,90,'  }
+  ];
 
   /* WORLD-SPACE MODE v2 — 120Hz-smooth scrolling.
      The canvas is ABSOLUTE and spans the WHOLE page height, painted in
@@ -85,21 +97,34 @@
 
   function targetCount() {
     var screens = Math.max(1, worldH / H);
-    return Math.min(IS_MOB ? 110 : 240, Math.round(COUNT * screens * 0.85));
+    return Math.min(MAX_TOTAL, Math.round(DENSITY * screens * 0.9));
   }
 
+  /* ── 3D: true perspective with continuous depth travel ──
+     Each node lives at depth z and slowly floats TOWARD the viewer
+     (starfield motion): it grows, brightens, then respawns deep in the
+     background. scale = PERSP/(PERSP+z). Pure math, 2D-canvas cost. */
+  var PERSP = 300, Z_NEAR = -120, Z_FAR = 520;
+
   function mkNode(yMin, yMax) {
-    var depth = 0.45 + Math.random() * 0.55;        /* 0.45 far … 1 near */
+    /* size tiers: 70% dust, 25% mid, 5% bright "hero" stars */
+    var tier = Math.random();
+    var r = tier < 0.70 ? 0.8 + Math.random() * 0.9
+          : tier < 0.95 ? 1.7 + Math.random() * 1.1
+          :               2.9 + Math.random() * 1.2;
+    var fr = Math.random(), acc = 0, fam = FAMS[0];
+    for (var q = 0; q < FAMS.length; q++) { acc += FAMS[q].w; if (fr <= acc) { fam = FAMS[q]; break; } }
     return {
       x: Math.random() * W,
       y: yMin + Math.random() * (yMax - yMin),
-      vx: (Math.random() - 0.5) * 0.35 * depth,     /* near = faster (parallax) */
-      vy: (Math.random() - 0.5) * 0.35 * depth,
-      r: (NODE_R + Math.random() * 1.2) * depth,
-      depth: depth,
-      violet: Math.random() < 0.15,                 /* rare violet accent */
+      vx: (Math.random() - 0.5) * 0.12,             /* stars barely drift in x/y */
+      vy: (Math.random() - 0.5) * 0.12,
+      r: r, fam: fam, hero: r > 2.9,
+      z: Z_NEAR + Math.random() * (Z_FAR - Z_NEAR), /* start anywhere in depth */
+      vz: 0.35 + Math.random() * 0.6,               /* travel speed toward viewer */
+      tw: 0.8 + Math.random() * 1.8,                /* twinkle rate */
       pulse: Math.random() * Math.PI * 2,
-      sy: 0
+      px: 0, py: 0, s: 1, fade: 1                   /* projection cache */
     };
   }
 
@@ -136,8 +161,25 @@
     octx.fillRect(0, 0, GLOW_SIZE, GLOW_SIZE);
     return oc;
   }
-  var glowBlue   = bakeGlow(BLUE, '0.30');
-  var glowViolet = bakeGlow(VIOLET, '0.26');
+  FAMS.forEach(function (f) { f.sprite = bakeGlow(f.glow, '0.42'); });
+
+  /* 4-point cross flare — pre-baked, used by the brightest stars */
+  var flareSprite = (function () {
+    var oc = document.createElement('canvas');
+    oc.width = oc.height = 96;
+    var o = oc.getContext('2d'), c = 48;
+    var g1 = o.createLinearGradient(0, c, 96, c);
+    g1.addColorStop(0, 'rgba(210,235,255,0)');
+    g1.addColorStop(0.5, 'rgba(230,245,255,0.9)');
+    g1.addColorStop(1, 'rgba(210,235,255,0)');
+    o.fillStyle = g1; o.fillRect(0, c - 0.9, 96, 1.8);
+    var g2 = o.createLinearGradient(c, 0, c, 96);
+    g2.addColorStop(0, 'rgba(210,235,255,0)');
+    g2.addColorStop(0.5, 'rgba(230,245,255,0.9)');
+    g2.addColorStop(1, 'rgba(210,235,255,0)');
+    o.fillStyle = g2; o.fillRect(c - 0.9, 0, 1.8, 96);
+    return oc;
+  })();
 
   /* perf: background ambience — capped at 30fps (it's a subtle
      backdrop; halves its cost, imperceptible) */
@@ -151,60 +193,89 @@
     render();
   }
 
+  var meteor = null;
+
   function render() {
     ctx.clearRect(0, 0, W, worldH);
     var t = Date.now() / 1000;
-    /* mouse in page coordinates */
-    var mWX = mouseX, mWY = mouseY + (window.scrollY || 0);
 
-    /* connections — quick |dy| pre-filter avoids most sqrt calls */
-    for (var i = 0; i < nodes.length; i++) {
-      for (var j = i + 1; j < nodes.length; j++) {
-        var dy = nodes[i].y - nodes[j].y;
-        if (dy > MAX_DIST || dy < -MAX_DIST) continue;
-        var dx = nodes[i].x - nodes[j].x;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MAX_DIST) {
-          var alpha = (1 - dist / MAX_DIST) * 0.34;
-          ctx.beginPath();
-          ctx.strokeStyle = BLUE + alpha + ')';
-          ctx.lineWidth   = 1.1;
-          ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.stroke();
-        }
-      }
+    /* ── 3D pass: perspective projection around the viewport centre ── */
+    var cx = W / 2;
+    var cy = (window.scrollY || 0) + H / 2;
+    for (var p = 0; p < nodes.length; p++) {
+      var np = nodes[p];
+      var s  = PERSP / (PERSP + np.z);
+      np.s   = s;
+      np.px  = cx + (np.x - cx) * s;
+      np.py  = cy + (np.y - cy) * s;
+      /* fade in when deep, fade out when passing the camera — no pops */
+      np.fade = Math.min(1, (np.z - Z_NEAR) / 90, (Z_FAR - np.z) / 140);
     }
 
-    /* nodes */
+    /* ── stars: twinkle + perspective size/brightness ── */
     nodes.forEach(function (n) {
-      var pulse = 0.7 + 0.3 * Math.sin(t * 1.4 + n.pulse);
+      var twinkle = 0.68 + 0.32 * Math.sin(t * n.tw + n.pulse);
+      var s = n.s;
+      var a = twinkle * (0.30 + 0.70 * Math.min(1, s)) * n.fade;
 
-      /* cursor response: nodes near the mouse glow a touch brighter */
-      var near = 0;
-      if (mouseX > -999) {
-        var mdx = n.x - mWX, mdy = n.y - mWY;
-        var md2 = mdx * mdx + mdy * mdy;
-        if (md2 < 32400) near = 1 - Math.sqrt(md2) / 180;   /* 180px radius */
+      if (a > 0.015) {
+        var gr = n.r * 6 * s;
+        ctx.globalAlpha = Math.min(1, a);
+        ctx.drawImage(n.fam.sprite, n.px - gr, n.py - gr, gr * 2, gr * 2);
+        if (n.hero) {
+          /* bright star: 4-point cross flare that breathes with the twinkle */
+          var fs = n.r * 11 * s * (0.8 + 0.35 * twinkle);
+          ctx.globalAlpha = Math.min(1, a * 0.85);
+          ctx.drawImage(flareSprite, n.px - fs, n.py - fs, fs * 2, fs * 2);
+        }
+        ctx.globalAlpha = 1;
+        ctx.beginPath();
+        ctx.arc(n.px, n.py, Math.max(0.4, n.r * s * (0.75 + 0.25 * twinkle)), 0, Math.PI * 2);
+        ctx.fillStyle = n.fam.core + Math.min(1, 0.85 * a + 0.1) + ')';
+        ctx.fill();
       }
-      var a = (pulse + near * 0.6) * n.depth;
 
-      var gr = n.r * 4 * (1 + near * 0.5);
-      ctx.globalAlpha = Math.min(1, a);
-      ctx.drawImage(n.violet ? glowViolet : glowBlue, n.x - gr, n.y - gr, gr * 2, gr * 2);
-      ctx.globalAlpha = 1;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r * pulse, 0, Math.PI * 2);
-      ctx.fillStyle = (n.violet ? LILAC : CYAN) + Math.min(1, 0.72 * a + near * 0.3) + ')';
-      ctx.fill();
-
-      /* move — ×2 compensates for 30fps (same visual speed) */
+      /* motion: gentle x/y drift + CONTINUOUS DEPTH TRAVEL toward the
+         viewer (×2 compensates for 30fps) */
       n.x += n.vx * 2; n.y += n.vy * 2;
+      n.z -= n.vz * 2;
+      if (n.z < Z_NEAR) {                 /* passed the camera → respawn deep */
+        n.z = Z_FAR;
+        n.x = Math.random() * W;
+        n.y = Math.random() * worldH;
+      }
       if (n.x < -20) n.x = W + 20;
       if (n.x > W + 20) n.x = -20;
       if (n.y < -20) n.y = worldH + 20;
       if (n.y > worldH + 20) n.y = -20;
     });
+
+    /* ── shooting star: frequent, inside the current viewport ── */
+    if (!meteor && Math.random() < 0.013) {          /* ≈ every 2.5-4s */
+      meteor = {
+        x: W * 0.15 + Math.random() * W * 0.7,
+        y: (window.scrollY || 0) + Math.random() * H * 0.5,
+        vx: (Math.random() < 0.5 ? -1 : 1) * (7 + Math.random() * 4),
+        vy: 4 + Math.random() * 3,
+        life: 1
+      };
+    }
+    if (meteor) {
+      var tailX = meteor.x - meteor.vx * 24, tailY = meteor.y - meteor.vy * 24;
+      var mg = ctx.createLinearGradient(meteor.x, meteor.y, tailX, tailY);
+      mg.addColorStop(0, 'rgba(235,247,255,' + (0.85 * meteor.life) + ')');
+      mg.addColorStop(1, 'rgba(120,190,255,0)');
+      ctx.strokeStyle = mg;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(meteor.x, meteor.y);
+      ctx.lineTo(tailX, tailY);
+      ctx.stroke();
+      meteor.x += meteor.vx * 2;
+      meteor.y += meteor.vy * 2;
+      meteor.life -= 0.05;
+      if (meteor.life <= 0) meteor = null;
+    }
   }
 
   /* BUG FIX (iOS): mobile Safari/Chrome fire `resize` every time the URL bar

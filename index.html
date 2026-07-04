@@ -407,6 +407,52 @@
         /* ── uniform background: original color, section overlay strips removed ── */
         #services,#areas,#contact,#why,#faq,.st-promo-section{background:transparent}
         .st-promo-section::before{display:none}
+
+        /* ── PREMIUM MOBILE MENU: elegant side drawer from the hamburger side ── */
+        @media(max-width:768px){
+            .navbar-row-top{position:relative;z-index:2}
+            .navbar .navbar-links,.navbar.navbar--top .navbar-links{
+                display:flex!important;flex-direction:column!important;justify-content:flex-start!important;
+                position:fixed!important;top:56px!important;bottom:0!important;left:0!important;right:auto!important;
+                width:min(74vw,300px)!important;height:auto!important;
+                background:linear-gradient(180deg,rgba(17,21,34,0.99) 0%,rgba(12,15,25,0.99) 100%)!important;
+                border:none!important;border-right:1px solid rgba(56,189,248,0.24)!important;
+                border-radius:0 18px 0 0!important;
+                box-shadow:18px 0 60px rgba(0,0,0,0.55),4px 0 28px rgba(14,165,233,0.08)!important;
+                padding:18px 14px!important;margin:0!important;gap:8px!important;
+                overflow-y:auto!important;
+                transform:translateX(-106%)!important;
+                transition:transform .32s cubic-bezier(.22,1,.36,1)!important;
+                animation:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+                z-index:1;
+            }
+            .navbar .navbar-links.active,.navbar.navbar--top .navbar-links.active{transform:translateX(0)!important}
+            .navbar .navbar-links a:not(.navbar-cta){
+                background:rgba(255,255,255,0.045)!important;
+                border:1px solid rgba(148,180,255,0.12)!important;
+                border-radius:12px!important;
+                padding:14px!important;font-size:16px!important;font-weight:600!important;
+                color:#dce8f8!important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)!important;
+                text-shadow:none!important;
+            }
+            .navbar .navbar-links a:not(.navbar-cta):active{
+                background:rgba(14,165,233,0.20)!important;border-color:rgba(56,189,248,0.50)!important;color:#fff!important;
+            }
+            .navbar .navbar-links .navbar-cta{
+                margin:10px auto 2px!important;width:100%!important;justify-content:center!important;
+                padding:14px!important;font-size:16px!important;border-radius:12px!important;
+            }
+        }
+
+        /* ── ACTIVE PAGE INDICATOR: clean premium pill (blue underline removed) ── */
+        .navbar-links a.nav-active:not(.navbar-cta){
+            color:#fff!important;
+            background:linear-gradient(135deg,rgba(14,165,233,0.30) 0%,rgba(79,70,229,0.22) 100%)!important;
+            border:1px solid rgba(56,189,248,0.60)!important;
+            box-shadow:0 2px 16px rgba(14,165,233,0.28),inset 0 1px 0 rgba(255,255,255,0.16)!important;
+            text-shadow:none!important;font-weight:700!important;transform:none!important;
+        }
+        .nav-active::after{display:none!important;content:none!important}
     </style>
 
     <!-- NO-ANIMATIONS MODE: three.js removed (hero canvas disabled)
@@ -464,6 +510,7 @@
         <button class="hamburger" id="hamburger" aria-label="תפריט" aria-expanded="false" aria-controls="navLinks">☰</button>
     </div>
     <div class="navbar-links" id="navLinks">
+        <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">דף הבית</a>
         <a href="#services">שירותים</a>
         <a href="#why">למה אנחנו</a>
         <a href="#areas">אזורי שירות</a>
@@ -485,7 +532,7 @@
 <section class="hero">
     <!-- NO-ANIMATIONS MODE: <canvas id="heroCanvas" aria-hidden="true"></canvas> -->
     <div class="hero-visual" aria-label="FiberFix Network 3D">
-        <img class="hero-logo-img" src="logo.webp" alt="FiberFix לוגו"
+        <img class="hero-logo-img" src="logo.webp?v=20260704" alt="FiberFix לוגו"
              width="600" height="300" fetchpriority="high" loading="eager">
     </div>
     <div class="hero-sep" aria-hidden="true">
@@ -686,34 +733,38 @@
         setTimeout(revealAll, 3000);
     })();
 
-    // Scrollspy — active nav link follows scroll position
-    // perf fix: offsetTop was read on EVERY scroll event (forced layout);
-    // offsets are now cached and refreshed only on resize/load.
+    // Scrollspy — active nav link follows scroll position.
+    // Tracks ALL sections (incl. contact, which has no menu link) and marks
+    // "דף הבית" when the user is at the top / in the hero.
+    // perf: offsetTop cached, refreshed only on resize/load.
     (function(){
-        const ids = ['services','why','areas','faq'];
+        const ids = ['services','why','areas','faq','contact'];
         const map = {};
         ids.forEach(id => {
             const sec = document.getElementById(id);
+            if (!sec) return;
             const lnk = document.querySelector('.navbar-links a[href="#'+id+'"]');
-            if (sec && lnk) map[id] = {sec, lnk, top: 0};
+            map[id] = {sec, lnk, top: 0};   /* lnk may be null (e.g. contact) */
         });
+        const homeLnk = document.querySelector('.navbar-links a[href="#"]');
         function cacheTops(){ ids.forEach(id => { if (map[id]) map[id].top = map[id].sec.offsetTop; }); }
         function update() {
-            const y = window.scrollY + 72;
+            const y = window.scrollY + 80;
             let active = null;
             ids.forEach(id => { if (map[id] && map[id].top <= y) active = id; });
-            ids.forEach(id => { if (map[id]) map[id].lnk.classList.toggle('nav-active', id === active); });
+            ids.forEach(id => { if (map[id] && map[id].lnk) map[id].lnk.classList.toggle('nav-active', id === active); });
+            if (homeLnk) homeLnk.classList.toggle('nav-active', active === null);
         }
         cacheTops();
         window.addEventListener('scroll', update, {passive:true});
         window.addEventListener('resize', () => { cacheTops(); update(); }, {passive:true});
-        window.addEventListener('load', cacheTops);
+        window.addEventListener('load', () => { cacheTops(); update(); });
         update();
     })();
 
 </script>
 
-<script src="shared.js"></script>
+<script src="shared.js?v=20260707"></script>
 
 
 <script>
@@ -810,324 +861,14 @@
 </script>
 
 <script>
-/* ═══════════════════════════════════════════════════════════════════
-   FiberFix Hero — Three.js Network Nexus v2
-   Sprite-based glowing nodes (canvas radial-gradient texture)
-   + additive-blended connections + light packets + mouse parallax
-   ═══════════════════════════════════════════════════════════════════ */
+/* ═══ FiberFix Hero — Three.js version DISABLED (NO-ANIMATIONS MODE).
+   The heavy WebGL hero was removed in the 2026-07-03 performance
+   overhaul; the starfield in shared.js is the site's background now.
+   (The original code was removed during recovery — see the Notion
+   project page & git history if it's ever needed again.) ═══ */
 (function () {
   'use strict';
-
-  function init() {
-    if (typeof THREE === 'undefined') { setTimeout(init, 50); return; }
-
-    var cv = document.getElementById('heroCanvas');
-    if (!cv) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-
-    var IS_MOB = window.innerWidth < 768;
-    var W = 0, H = 0;
-
-    /* ── scene ── */
-    var scene    = new THREE.Scene();
-    var group    = new THREE.Group();
-    scene.add(group);
-
-    var camera   = new THREE.PerspectiveCamera(52, 1, 0.1, 600);
-    camera.position.set(0, 0, 28);
-
-    var renderer = new THREE.WebGLRenderer({
-      canvas: cv, antialias: false, alpha: true
-    });
-    renderer.setClearColor(0x000000, 0);
-    /* perf: glow sprites are soft gradients — render at reduced pixel ratio,
-       visually identical but ~40% fewer pixels to fill */
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, IS_MOB ? 1 : 1.35));
-
-    /* ── glow texture ──────────────────────────────────────────────
-       One canvas-radial-gradient texture, shared by every sprite.
-       White centre → transparent edge. Color is set per-material.
-    ─────────────────────────────────────────────────────────────── */
-    function makeGlowTex() {
-      var tc  = document.createElement('canvas');
-      tc.width = tc.height = 128;
-      var ctx = tc.getContext('2d');
-      var c   = 64, r = 64;
-      var g   = ctx.createRadialGradient(c, c, 0, c, c, r);
-      g.addColorStop(0.00, 'rgba(255,255,255,1.00)');
-      g.addColorStop(0.08, 'rgba(255,255,255,0.92)');
-      g.addColorStop(0.22, 'rgba(255,255,255,0.55)');
-      g.addColorStop(0.45, 'rgba(255,255,255,0.18)');
-      g.addColorStop(0.70, 'rgba(255,255,255,0.05)');
-      g.addColorStop(1.00, 'rgba(255,255,255,0.00)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, 128, 128);
-      return new THREE.CanvasTexture(tc);
-    }
-    var GLOW = makeGlowTex();
-
-    /* helper — make one additive sprite */
-    function mkSp(hexColor, opacity, scale) {
-      var sp = new THREE.Sprite(new THREE.SpriteMaterial({
-        map: GLOW, color: hexColor,
-        transparent: true, opacity: opacity,
-        blending: THREE.AdditiveBlending, depthWrite: false
-      }));
-      sp.scale.setScalar(scale);
-      return sp;
-    }
-
-    /* ── colour palette ── */
-    var PAL = [
-      0x0ea5e9, 0x38bdf8, 0x06b6d4,   /* cyan  × 3  */
-      0x0ea5e9, 0x38bdf8,              /* cyan  × 2  (weight) */
-      0x7c3aed, 0xa855f7, 0x818cf8,   /* purple × 3 */
-      0xf59e0b,                        /* gold   × 1 */
-      0xe0f2fe                         /* ice    × 1 */
-    ];
-
-    /* ── nodes ── */
-    var NODE_N = IS_MOB ? 22 : 70;
-    var CONN_D = IS_MOB ? 7.5 : 8.5;
-    var PACK_N = IS_MOB ? 8 : 30;
-
-    var nodes = [];
-
-    for (var i = 0; i < NODE_N; i++) {
-      /* scatter in a squashed ellipsoid */
-      var u   = Math.random(), v = Math.random();
-      var phi = Math.acos(2 * u - 1);
-      var tht = 2 * Math.PI * v;
-      var rr  = 7 + Math.random() * 10;
-      var x   = rr * Math.sin(phi) * Math.cos(tht) * 1.9;
-      var y   = rr * Math.sin(phi) * Math.sin(tht) * 0.85;
-      var z   = rr * Math.cos(phi) * 1.3;
-
-      var hex = PAL[Math.floor(Math.random() * PAL.length)];
-      var col = new THREE.Color(hex);
-
-      /* size tiers: hub / medium / micro */
-      var sz  = i < 5 ? 1.9 : (i < 22 ? 1.1 : 0.58);
-
-      /* position holder (invisible Object3D) */
-      var holder = new THREE.Object3D();
-      holder.position.set(x, y, z);
-
-      /* Layer 1 — large outer nebula (very faint, coloured)
-         perf: only hub/medium nodes get the huge nebula sprite —
-         on micro nodes it was invisible fill-rate cost (48 extra
-         full-blend sprites at ~9 world-units each) */
-      var sp1 = null;
-      /* mobile: no nebula layer at all — phone GPUs can't afford the fill */
-      if (!IS_MOB && i < 22) {
-        sp1 = mkSp(hex, 0.06, sz * 16);
-        holder.add(sp1);
-      }
-      /* Layer 2 — mid glow  (medium opacity, coloured) */
-      var sp2 = mkSp(hex, 0.30, sz * 6);
-      /* Layer 3 — bright hot core (nearly white) */
-      var sp3 = mkSp(0xffffff, 0.90, sz * 2.0);
-
-      holder.add(sp2);
-      holder.add(sp3);
-      group.add(holder);
-
-      nodes.push({
-        obj: holder, col: col, hex: hex, sz: sz,
-        phase: Math.random() * Math.PI * 2,
-        sp1: sp1, sp2: sp2, sp3: sp3
-      });
-    }
-
-    /* ── connections — LineSegments (ONE draw call) ── */
-    var pairs  = [];
-    var posArr = [], colArr = [];
-
-    for (var a = 0; a < nodes.length; a++) {
-      for (var b = a + 1; b < nodes.length; b++) {
-        var dd = nodes[a].obj.position.distanceTo(nodes[b].obj.position);
-        if (dd < CONN_D) {
-          pairs.push([a, b]);
-          var pA = nodes[a].obj.position, pB = nodes[b].obj.position;
-          posArr.push(pA.x, pA.y, pA.z,  pB.x, pB.y, pB.z);
-          var ca = nodes[a].col, cb = nodes[b].col;
-          colArr.push(ca.r, ca.g, ca.b,  cb.r, cb.g, cb.b);
-        }
-      }
-    }
-
-    var lGeo = new THREE.BufferGeometry();
-    lGeo.setAttribute('position', new THREE.Float32BufferAttribute(posArr, 3));
-    lGeo.setAttribute('color',    new THREE.Float32BufferAttribute(colArr, 3));
-    var lMat = new THREE.LineBasicMaterial({
-      vertexColors: true, transparent: true, opacity: 0.28,
-      blending: THREE.AdditiveBlending, depthWrite: false
-    });
-    group.add(new THREE.LineSegments(lGeo, lMat));
-
-    /* ── light packets (sprites) ── */
-    var packets = [];
-    if (pairs.length > 0) {
-      for (var k = 0; k < PACK_N; k++) {
-        var pi   = Math.floor(Math.random() * pairs.length);
-        var pcol = Math.random() < 0.65 ? 0x7dd3fc : 0xffffff;
-
-        var ph = new THREE.Object3D();
-        ph.add(mkSp(pcol,    0.20, 3.2));   /* packet glow  */
-        ph.add(mkSp(0xffffff, 1.00, 0.85)); /* packet core  */
-        group.add(ph);
-
-        packets.push({
-          obj: ph, pi: pi,
-          t:   Math.random(),
-          spd: (0.003 + Math.random() * 0.005) * (Math.random() < 0.5 ? 1 : -1)
-        });
-      }
-    }
-
-    /* ── resize ── */
-    function resize() {
-      var p = cv.parentElement;
-      W = p.offsetWidth; H = p.offsetHeight;
-      renderer.setSize(W, H, false);
-      cv.style.width  = W + 'px';
-      cv.style.height = H + 'px';
-      camera.aspect = W / H;
-      camera.updateProjectionMatrix();
-    }
-
-    /* ── mouse parallax — raw clientX/Y, no getBoundingClientRect per event ── */
-    var mx = 0, my = 0;
-    var heroEl = cv.closest('section') || cv.parentElement;
-    var _hRect = heroEl.getBoundingClientRect();
-    /* refresh rect only on resize, not every mousemove */
-    window.addEventListener('resize', function() {
-      _hRect = heroEl.getBoundingClientRect();
-    }, { passive: true });
-
-    /* document-level listener so mouse never "escapes" the element boundary */
-    document.addEventListener('mousemove', function(e) {
-      var rx = (e.clientX - _hRect.left) / _hRect.width;
-      var ry = (e.clientY - _hRect.top)  / _hRect.height;
-      /* clamp so out-of-hero doesn't snap to 0 abruptly */
-      mx = Math.max(-1, Math.min(1, (rx - 0.5) * 2));
-      my = Math.max(-1, Math.min(1, (ry - 0.5) * 2));
-    }, { passive: true });
-
-    heroEl.addEventListener('mouseleave', function() { mx = 0; my = 0; }, { passive: true });
-
-    var tmp = new THREE.Vector3();
-    var tick = 0, raf;
-    var autoAngle = 0, tiltX = 0, tiltY = 0;
-    /* camera parallax state */
-    var camX = 0, camY = 0, camZ = 30;
-
-    function frame() {
-      tick += 0.006;
-
-      /* ── auto-rotation ── */
-      autoAngle += 0.0012;
-
-      /* ── mouse tilt: fast lerp (0.10) + large range (0.7 / 0.5) ── */
-      tiltY += (mx * 0.70 - tiltY) * 0.10;
-      tiltX += (-my * 0.50 - tiltX) * 0.10;
-
-      /* ── camera parallax: subtle drift adds real depth ── */
-      camX += (mx * 4.5 - camX) * 0.07;
-      camY += (-my * 3.0 - camY) * 0.07;
-      camera.position.set(camX, camY, 30);
-      camera.lookAt(0, 0, 0);
-      /* ── dynamic FOV: slightly widens when mouse moves to edges ── */
-      var mouseDist = Math.sqrt(mx * mx + my * my);
-      var targetFov = 52 + mouseDist * 4.5;
-      camera.fov += (targetFov - camera.fov) * 0.06;
-      camera.updateProjectionMatrix();
-
-      group.rotation.y = autoAngle + tiltY;
-      group.rotation.x = tiltX;
-      group.position.set(0, 0, 0);
-
-      /* animate nodes */
-      for (var i = 0; i < nodes.length; i++) {
-        var n   = nodes[i];
-        var p   = 0.78 + 0.22 * Math.sin(tick * 2.2 + n.phase);
-        var sc  = 0.90 + 0.10 * Math.sin(tick * 1.6 + n.phase);
-        n.sp2.material.opacity = p * 0.30;
-        n.sp3.material.opacity = p * 0.90;
-        n.sp2.scale.setScalar(n.sz * 6.0 * sc);
-        n.sp3.scale.setScalar(n.sz * 2.0 * sc);
-      }
-
-      /* animate packets */
-      for (var k = 0; k < packets.length; k++) {
-        var pk = packets[k];
-        pk.t  += pk.spd;
-        if (pk.t > 1 || pk.t < 0) {
-          pk.spd *= -1;
-          pk.t    = Math.max(0, Math.min(1, pk.t));
-          if (Math.random() < 0.25)
-            pk.pi = Math.floor(Math.random() * pairs.length);
-        }
-        var pr = pairs[pk.pi];
-        if (!pr) continue;
-        tmp.lerpVectors(
-          nodes[pr[0]].obj.position,
-          nodes[pr[1]].obj.position,
-          pk.t
-        );
-        pk.obj.position.copy(tmp);
-        /* flicker the core */
-        pk.obj.children[1].material.opacity = 0.70 + 0.30 * Math.sin(tick * 16 + k);
-      }
-
-      renderer.render(scene, camera);
-      raf = requestAnimationFrame(frame);
-    }
-
-    /* ── run control: render only when hero is on screen AND tab visible ── */
-    var running = false, heroInView = true;
-    function startLoop() {
-      if (running) return;
-      running = true;
-      raf = requestAnimationFrame(frame);
-    }
-    function stopLoop() {
-      if (!running) return;
-      running = false;
-      cancelAnimationFrame(raf);
-    }
-    function syncLoop() {
-      if (!document.hidden && heroInView) startLoop(); else stopLoop();
-    }
-
-    document.addEventListener('visibilitychange', syncLoop);
-
-    /* perf: stop the WebGL loop entirely while the hero is scrolled
-       out of view — previously it kept rendering behind every section */
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        heroInView = entries[0].isIntersecting;
-        syncLoop();
-      }, { threshold: 0.02 }).observe(heroEl);
-    }
-
-    /* BUG FIX (iOS): ignore height-only resizes (mobile URL bar collapse
-       during scroll) — they caused a full renderer resize + visual pop */
-    var rt, _lastVW = window.innerWidth;
-    window.addEventListener('resize', function () {
-      clearTimeout(rt);
-      rt = setTimeout(function () {
-        if (window.innerWidth === _lastVW) return;
-        _lastVW = window.innerWidth;
-        resize();
-      }, 120);
-    }, { passive: true });
-
-    resize();
-    startLoop();
-  }
-
-  init();
+  /* hero canvas + three.js were removed from the page — nothing to do */
 })();
 </script>
 
@@ -1136,8 +877,6 @@
 (function () {
   var navbar  = document.querySelector('.navbar');
   if (!navbar) return;
-
-  var servicesSec = document.getElementById('services');
 
   function updateNavbar() {
     /* Glass effect active throughout the entire homepage */
