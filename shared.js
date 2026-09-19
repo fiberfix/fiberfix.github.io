@@ -87,11 +87,20 @@
     { w: 0.09, core: 'rgba(253,230,168,', glow: 'rgba(245,185,90,'  }
   ];
 
+  /* mobile: render at reduced internal resolution and let CSS stretch it to
+     the full viewport. The soft, glowy starfield upscales invisibly, but the
+     GPU work (fill + per-frame texture upload) drops by ~64% — cheap enough
+     to run CONTINUOUSLY during touch scroll with zero jank. Desktop: 1:1. */
+  var RES = IS_MOB ? 0.6 : 1;
+
   function resize() {
     W = window.innerWidth;
     H = window.innerHeight;
-    canvas.width  = W;    /* backing store = viewport, DPR 1 (cheapest) */
-    canvas.height = H;
+    canvas.width  = Math.round(W * RES);   /* low-res backing store          */
+    canvas.height = Math.round(H * RES);
+    canvas.style.width  = '100%';          /* CSS stretches to full viewport */
+    canvas.style.height = '100%';
+    ctx.setTransform(RES, 0, 0, RES, 0, 0); /* keep all drawing in CSS px    */
   }
 
   /* ── 3D: perspective with continuous depth travel toward the viewer ── */
@@ -373,10 +382,11 @@
   var meteor = null;
 
   /* ── frame pacing ──
-     Cap the ambient animation at 30fps: it's a slow drifting backdrop, so
-     30fps looks smooth while leaving plenty of GPU/main-thread budget for
-     the compositor to scroll at the display's native refresh. The animation
-     keeps running continuously during scroll (no freeze). */
+     30fps ambient on ALL devices, running CONTINUOUSLY — including during
+     scroll (no freeze: a visible stop feels worse than any jank). Mobile
+     affordability comes from the reduced-resolution backing store (see RES
+     above), which makes each frame cheap enough for iOS to composite scroll
+     at full speed alongside the animation. */
   var FRAME_MS = 1000 / 30, lastFrame = 0;
 
   function draw(now) {
